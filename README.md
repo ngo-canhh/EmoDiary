@@ -2,9 +2,36 @@
 
 ## Information
 Ngô Trí Cảnh - 20220015  
-Email: canh.nt220015@sis.hust.edu.vn
+Email: canh.nt220015@sis.hust.edu.vn  
 
-## Detailed Development Roadmap (8 Weeks)
+## Tính Năng Chính (Dự kiến)
+
+### Phân loại và Tìm kiếm Nhật Ký Cảm Xúc
+Gắn tags và tìm kiếm theo từ khóa để truy cập nhanh chóng.
+
+### Đính kèm Hình Ảnh và Video
+Hỗ trợ tải lên và hiển thị ảnh/video trong nhật ký.
+
+### Lịch Sự Kiện và Kỷ Niệm Quan Trọng
+Hiển thị nhật ký theo dạng lịch và đánh dấu các sự kiện đặc biệt.
+
+### Tạo Ghi Chú Bí Mật (Private Entries)
+Cho phép bảo mật ghi chú với mật khẩu hoặc các phương thức xác thực.
+
+### Tính Năng “Mood Replay”
+Gợi ý playlist âm nhạc hoặc hoạt động giúp cải thiện tâm trạng.
+
+### Viết Lời Nhắn Cho Tương Lai
+Người dùng có thể viết thư cho bản thân và đặt ngày để mở lại.
+
+### Nhắc Nhở Nhật Ký bằng Câu Hỏi Ngẫu Nhiên
+Hằng ngày, app sẽ gợi ý một câu hỏi để khơi gợi cảm xúc.
+
+### Chế Độ Offline
+Ghi nhật ký khi không có mạng và đồng bộ tự động khi online.
+
+
+## Kế hoạch làm việc (Dự kiến)
 
 ### Week 1-2: UI Design and Offline Mode
 - **Thiết kế giao diện cơ bản:**
@@ -59,33 +86,6 @@ Email: canh.nt220015@sis.hust.edu.vn
     - Chuẩn bị bản demo và báo cáo kết quả.
 - **Kết quả:**
     - Hoàn thành ứng dụng, sẵn sàng cho buổi trình bày cuối cùng.
-
-## Tính Năng Chính
-
-### Phân loại và Tìm kiếm Nhật Ký Cảm Xúc
-Gắn tags và tìm kiếm theo từ khóa để truy cập nhanh chóng.
-
-### Đính kèm Hình Ảnh và Video
-Hỗ trợ tải lên và hiển thị ảnh/video trong nhật ký.
-
-### Lịch Sự Kiện và Kỷ Niệm Quan Trọng
-Hiển thị nhật ký theo dạng lịch và đánh dấu các sự kiện đặc biệt.
-
-### Tạo Ghi Chú Bí Mật (Private Entries)
-Cho phép bảo mật ghi chú với mật khẩu hoặc các phương thức xác thực.
-
-### Tính Năng “Mood Replay”
-Gợi ý playlist âm nhạc hoặc hoạt động giúp cải thiện tâm trạng.
-
-### Viết Lời Nhắn Cho Tương Lai
-Người dùng có thể viết thư cho bản thân và đặt ngày để mở lại.
-
-### Nhắc Nhở Nhật Ký bằng Câu Hỏi Ngẫu Nhiên
-Hằng ngày, app sẽ gợi ý một câu hỏi để khơi gợi cảm xúc.
-
-### Chế Độ Offline
-Ghi nhật ký khi không có mạng và đồng bộ tự động khi online.
-
 ### Đồng Bộ Trên Nhiều Thiết Bị
 Sử dụng Firebase hoặc một hệ thống backend để đồng bộ hóa dữ liệu.
 
