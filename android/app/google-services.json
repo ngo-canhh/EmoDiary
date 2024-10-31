@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "179585942268",
+    "project_id": "emodiary-6cf14",
+    "storage_bucket": "emodiary-6cf14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179585942268:android:7a3b07216e28963a5e0d79",
+        "android_client_info": {
+          "package_name": "com.ngocanhh.emodiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179585942268-bevqmhc3fr7i3u0kgvbsj14ljhjhvf79.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBytjC6sryTziMOqW8Qf0KoQVKHXIezLuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179585942268-bevqmhc3fr7i3u0kgvbsj14ljhjhvf79.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "179585942268-9ochf1m7m60o6bhr6di16rbmolpu239d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.emodiary"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
