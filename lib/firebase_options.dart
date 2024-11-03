@@ -28,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -51,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:179585942268:android:7a3b07216e28963a5e0d79',
     messagingSenderId: '179585942268',
     projectId: 'emodiary-6cf14',
-    storageBucket: 'emodiary-6cf14.appspot.com',
+    storageBucket: 'emodiary-6cf14.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -59,19 +62,8 @@ class DefaultFirebaseOptions {
     appId: '1:179585942268:ios:8fd5adf28c6daece5e0d79',
     messagingSenderId: '179585942268',
     projectId: 'emodiary-6cf14',
-    storageBucket: 'emodiary-6cf14.appspot.com',
+    storageBucket: 'emodiary-6cf14.firebasestorage.app',
     iosClientId: '179585942268-9ochf1m7m60o6bhr6di16rbmolpu239d.apps.googleusercontent.com',
     iosBundleId: 'com.example.emodiary',
   );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAxgQUzgdYmrkzokitNjTFu0FynD3LKQ04',
-    appId: '1:179585942268:ios:8fd5adf28c6daece5e0d79',
-    messagingSenderId: '179585942268',
-    projectId: 'emodiary-6cf14',
-    storageBucket: 'emodiary-6cf14.appspot.com',
-    iosClientId: '179585942268-9ochf1m7m60o6bhr6di16rbmolpu239d.apps.googleusercontent.com',
-    iosBundleId: 'com.example.emodiary',
-  );
-
 }

@@ -7,17 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:overlay_loader_with_app_icon/overlay_loader_with_app_icon.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
 
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPwController = TextEditingController();
 
   bool _isLoading = false;
 
@@ -25,7 +27,9 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     super.dispose();
     emailController.dispose();
+    usernameController.dispose();
     passwordController.dispose();
+    confirmPwController.dispose();
   }
 
 
@@ -61,64 +65,54 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 50,),
-
               
                   // email textfield
                   AuthTextfield(
                     hintText: 'Email', 
                     obscureText: false, 
                     controller: emailController),
-
                   SizedBox(height: 10,),
 
+
+                  // username
+                  AuthTextfield(
+                    hintText: 'Username', 
+                    obscureText: false, 
+                    controller: usernameController),
+                  SizedBox(height: 10,),
 
                   // password textfield
                   AuthTextfield(
                     hintText: 'Password', 
                     obscureText: true, 
                     controller: passwordController),
+                  SizedBox(height: 10,),
 
-                  SizedBox(height: 5,),
-
-
-                  // forgot password
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.go('/auth/forgotpw');
-                        },
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            color: colors.secondary,
-                            fontSize: 13
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
+                  // confirm password
+                  AuthTextfield(
+                    hintText: 'Confirm password', 
+                    obscureText: true, 
+                    controller: confirmPwController),
                   SizedBox(height: 15,),
 
-
-                  // login 
+                  // sign up 
                   AnimatedButton(
-                    text: 'Log in',
+                    text: 'Sign up',
                     height: 50,
                     width: 130,
                     borderRadius: 50,
                     borderWidth: 2,
                     isReverse: true,
-                    onPress: () {
+                    onPress: () async {
                       setState(() {
                         _isLoading = true;
                       });
-                      userState.logIn(
+                      await userState.signUp(
                         context: context, 
                         emailController: emailController, 
-                        passwordController: passwordController);
+                        userNameController: usernameController,
+                        passwordController: passwordController,
+                        confirmPwController: confirmPwController);
                       setState(() {
                         _isLoading = false;
                       });
@@ -131,17 +125,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     selectedTextColor: colors.primary,
                     selectedBackgroundColor: colors.inversePrimary,
                     transitionType: TransitionType.CENTER_ROUNDER,
-
                   ),
                   SizedBox(height: 10,),
 
 
-                  // sign up
+                  // log in
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account? ",
+                        "Already have an account? ",
                         style: TextStyle(
                           color: colors.onSecondary,
                           fontSize: 15
@@ -149,10 +142,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          context.go('/auth/signup');
+                          context.go('/auth/login');
                         },
                         child: Text(
-                          'Sign up now!',
+                          'Log in now!',
                           style: TextStyle(
                             color: colors.inversePrimary,
                             fontSize: 15,

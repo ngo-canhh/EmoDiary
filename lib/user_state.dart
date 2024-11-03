@@ -1,59 +1,127 @@
-import 'package:emodiary/firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider, PhoneAuthProvider;
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:emodiary/auth/firebase_exceptions.dart';
+import 'package:emodiary/helper/helper_function.dart';
+import 'package:go_router/go_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class UserState extends ChangeNotifier{
+class UserState extends ChangeNotifier {
   UserState() {
     init();
   }
 
-  bool _loggedIn = false;
   User? _user;
-  
-  bool get loggedIn => _loggedIn;
-  User? get user1 => _user;
+  static final auth = FirebaseAuth.instance;
 
-  Future<void> init() async {
-    FirebaseUIAuth.configureProviders([
-      EmailAuthProvider(),
-    ]);
-
-    FirebaseAuth.instance.userChanges().listen((user) {
-      if (user != null) {
-        _loggedIn = true;
-      } else {
-        _loggedIn = false;
-      }
-      notifyListeners();
-    });
-  }
-
-  Future<void> signIn(String email, String password) async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-      _loggedIn = true;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      _loggedIn = false;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> createUser(String email, String password) async {
-    try {
-      FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-    } catch (e) {
-      rethrow;
-    }
+  init() {
+    FirebaseAuth.instance
+                .authStateChanges()
+                .listen((User? user) {
+                  _user = user;
+                });
+    notifyListeners();
   }
   
+  bool get loggedIn => _user != null;
+  User? get user => _user;
+
+  
+
+  // sign in
+  Future<void> logIn({required BuildContext context, 
+                      required TextEditingController emailController, 
+                      required TextEditingController passwordController}) async {
+    AuthStatus? status;
+    await auth
+        .signInWithEmailAndPassword(email: emailController.text, password: passwordController.text)
+        .then((value) => status = AuthStatus.successful)
+        .catchError(
+          (e) => status = AuthExceptionHandler.handleAuthException(e));
+    if (status == AuthStatus.successful) {
+      context.go('/home/today');
+    } else {
+      displayMessageToUser(AuthExceptionHandler.generateErrorMessage(status), context);
+      passwordController.clear();
+    }
+  }
+
+  // sign out
+  Future<void> logOut({required BuildContext context}) async {
+    AuthStatus? status;
+    await auth
+        .signOut()
+        .then((value) => status = AuthStatus.successful)
+        .catchError(
+          (e) => status = AuthExceptionHandler.handleAuthException(e));
+    if (status == AuthStatus.successful) {
+      context.go('/');
+    } else {
+      await displayMessageToUser(AuthExceptionHandler.generateErrorMessage(status), context);
+    }
+  }
+
+  // sign up
+  Future<void> signUp({required BuildContext context, 
+                      required TextEditingController userNameController, 
+                      required TextEditingController emailController, 
+                      required TextEditingController passwordController, 
+                      required TextEditingController confirmPwController}) async {
+
+    if (passwordController.text != confirmPwController.text) {
+      throw FirebaseAuthException(
+        code: "password-do-not-match"
+      );
+    }
+    AuthStatus? status;
+    await auth
+        .createUserWithEmailAndPassword(email: emailController.text, password: passwordController.text)
+        .then((value) => status = AuthStatus.successful)
+        .catchError(
+          (e) => status = AuthExceptionHandler.handleAuthException(e));
+    if (status == AuthStatus.successful) {
+      await _user!.updateDisplayName(userNameController.text);
+      await auth.signOut();
+      await displayMessageToUser("Successful, please log in!", context);
+      context.go('/auth/login');
+    } else {
+      await displayMessageToUser(AuthExceptionHandler.generateErrorMessage(status), context);
+    }
+  }
+
+
+  // reset password
+  Future<void> sendResetPwRequest({required BuildContext context, 
+                      required TextEditingController emailController}) async {
+    AuthStatus? status;
+    await auth
+        .sendPasswordResetEmail(email: emailController.text)
+        .then((value) => status = AuthStatus.successful)
+        .catchError(
+          (e) => status = AuthExceptionHandler.handleAuthException(e));
+    if (status == AuthStatus.successful) {
+      await displayMessageToUser("Successful! Check your email!", context);
+    } else {
+      await displayMessageToUser(AuthExceptionHandler.generateErrorMessage(status), context);
+    }
+  }
+
+  // Future<void> confirmOTP({required BuildContext context, 
+  //                     required TextEditingController codeController,
+  //                     required TextEditingController newPwController}) async {
+  //   AuthStatus? status;
+  //   await auth
+  //       .confirmPasswordReset(code: codeController.text, newPassword: newPwController.text)
+  //       .then((value) => status = AuthStatus.successful)
+  //       .catchError(
+  //         (e) => status = AuthExceptionHandler.handleAuthException(e));
+  //   if (status == AuthStatus.successful) {
+  //   } else {
+  //     displayMessageToUser(AuthExceptionHandler.generateErrorMessage(status), context);
+  //   }
+  // }
+
+  // change password
+
+  // change username
+
+  // change avatar
 }

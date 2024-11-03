@@ -1,25 +1,32 @@
-import 'package:go_router/go_router.dart';
 import 'package:emodiary/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MePage extends StatelessWidget {
+class MePage extends StatefulWidget {
   const MePage({super.key});
 
   @override
+  State<MePage> createState() => _MePageState();
+}
+
+class _MePageState extends State<MePage> {
+  @override
   Widget build(BuildContext context) {
     UserState userState = Provider.of<UserState>(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            userState.signOut();
-            context.go('/');
-          },
-          child: Text('Sign Out'),
-        )
-      ],
+
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('hello ${ userState.user!.displayName}'),
+          ElevatedButton(
+            onPressed: () async {
+              await userState.logOut(context: context);
+            },
+            child: Text('Sign Out'),
+          )
+        ],
+      ),
     );
   }
 }
