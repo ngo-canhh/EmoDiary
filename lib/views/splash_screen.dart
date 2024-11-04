@@ -35,7 +35,7 @@ class SplashScreen extends StatelessWidget{
                   FaIcon(
                     FontAwesomeIcons.featherPointed,
                     size: MediaQuery.of(context).size.width * 0.3,
-                    color: colors.onSurface,
+                    color: colors.inversePrimary,
                   ),
                   SizedBox(height: 10,),
                   // app name
@@ -44,7 +44,7 @@ class SplashScreen extends StatelessWidget{
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: colors.onSurface
+                      color: colors.inversePrimary
                     ),
                   ),
                 ],

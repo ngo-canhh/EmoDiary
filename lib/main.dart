@@ -1,5 +1,7 @@
 import 'package:emodiary/theme/dark_mode.dart';
+import 'package:emodiary/theme/dark_pastel_mode.dart';
 import 'package:emodiary/theme/light_mode.dart';
+import 'package:emodiary/theme/pastel_mode.dart';
 import 'package:emodiary/user_state.dart';
 import 'package:emodiary/firebase_options.dart';
 import 'package:emodiary/views/forgot_pw_screen.dart';
@@ -94,8 +96,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'EmoDiary',
-      theme: lightMode,
-      darkTheme: darkMode,
+      theme: pastelMode,
+      darkTheme: darkPastelMode,
       routerConfig: _router,
     );
   }

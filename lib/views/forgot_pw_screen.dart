@@ -33,6 +33,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final userState = Provider.of<UserState>(context);
     return OverlayLoaderWithAppIcon(
       isLoading: _isLoading,
@@ -48,7 +49,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                   FaIcon(
                     FontAwesomeIcons.featherPointed,
                     size: MediaQuery.of(context).size.width * 0.28,
-                    color: Theme.of(context).colorScheme.onSurface,
+                    color: colors.inversePrimary,
                   ),
                   SizedBox(height: 5,),
               
@@ -58,7 +59,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurface
+                      color: colors.inversePrimary
                     ),
                   ),
                   SizedBox(height: 40,),
@@ -104,7 +105,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                                 Text(
                                   'Send',
                                   style: TextStyle(
-                                  color: Theme.of(context).colorScheme.inversePrimary,
+                                  color: colors.inversePrimary,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   ),
@@ -112,7 +113,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                                 Text(
                                   'OTP',
                                   style: TextStyle(
-                                  color: Theme.of(context).colorScheme.inversePrimary,
+                                  color: colors.inversePrimary,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   ),
@@ -134,7 +135,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                     ],
                   ),
                   // Divider(
-                  //   color: Theme.of(context).colorScheme.inversePrimary,
+                  //   color: colors.inversePrimary,
                   // ),
 
                   // // otp
@@ -171,7 +172,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                   //               Text(
                   //                 'Confirm',
                   //                 style: TextStyle(
-                  //                 color: Theme.of(context).colorScheme.inversePrimary,
+                  //                 color: colors.inversePrimary,
                   //                 fontSize: 15,
                   //                 fontWeight: FontWeight.bold,
                   //                 ),
@@ -179,7 +180,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                   //               Text(
                   //                 'OTP',
                   //                 style: TextStyle(
-                  //                 color: Theme.of(context).colorScheme.inversePrimary,
+                  //                 color: colors.inversePrimary,
                   //                 fontSize: 15,
                   //                 fontWeight: FontWeight.bold,
                   //                 ),
@@ -187,7 +188,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                   //               Text(
                   //                 '&',
                   //                 style: TextStyle(
-                  //                 color: Theme.of(context).colorScheme.inversePrimary,
+                  //                 color: colors.inversePrimary,
                   //                 fontSize: 15,
                   //                 fontWeight: FontWeight.w300,
                   //                 ),
@@ -195,7 +196,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                   //               Text(
                   //                 'Reset',
                   //                 style: TextStyle(
-                  //                 color: Theme.of(context).colorScheme.inversePrimary,
+                  //                 color: colors.inversePrimary,
                   //                 fontSize: 15,
                   //                 fontWeight: FontWeight.bold,
                   //                 ),
@@ -226,7 +227,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                       Text(
                         "Remember your password? ",
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSecondary,
+                          color: colors.onSecondary,
                           fontSize: 15
                         ),
                       ),
@@ -237,7 +238,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                         child: Text(
                           'Log in!',
                           style: TextStyle(
-                            color: Theme.of(context).colorScheme.inversePrimary,
+                            color: colors.inversePrimary,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),

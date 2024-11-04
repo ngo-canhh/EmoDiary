@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   FaIcon(
                     FontAwesomeIcons.featherPointed,
                     size: MediaQuery.of(context).size.width * 0.28,
-                    color: colors.onSurface,
+                    color: colors.inversePrimary,
                   ),
                   SizedBox(height: 5,),
               
@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: colors.onSurface
+                      color: colors.inversePrimary
                     ),
                   ),
                   SizedBox(height: 50,),
