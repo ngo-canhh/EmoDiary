@@ -1,0 +1,7 @@
+Thư mục chứa các file của module quản lý local database
+
+Cung cấp các đối tượng, thuộc tính và phương thức để giao tiếp với database
+
+Cung cấp provider để quản lý database
+
+Cung cấp các service để làm việc với database

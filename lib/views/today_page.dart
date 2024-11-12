@@ -1,4 +1,4 @@
-import 'package:emodiary/user_state.dart';
+import 'package:emodiary/database/db_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,9 +7,8 @@ class TodayPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserState userState = Provider.of<UserState>(context);
+    final dbProvider = Provider.of<DbProvider>(context);
 
-    return Text('${userState.loggedIn}');
+    return Text('${dbProvider.user.displayName}');
   }
-  
 }

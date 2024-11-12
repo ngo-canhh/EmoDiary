@@ -1,0 +1,8 @@
+Thư mục này chứa các file của module 'sync' có nhiệm vụ:
+    - Đảm bảo sự xuất hiện của database ở local khi người dùng đăng nhập
+        Khi bắt đầu đăng nhập initSync() được gọi để bắt đầu. 
+
+    - Đảo bảo quá trình real-time sync với Firebase Storage
+
+    - Đảm bảo dữ liệu của người dùng hiện tại được xoá khỏi local khi đăng xuất
+        Khi đăng xuất endSync() được gọi để để xử lý

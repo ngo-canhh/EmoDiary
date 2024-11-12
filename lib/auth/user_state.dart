@@ -1,28 +1,45 @@
 import 'package:emodiary/auth/firebase_exceptions.dart';
+import 'package:emodiary/database/db_provider.dart';
 import 'package:emodiary/helper/helper_function.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserState extends ChangeNotifier {
+  UserState._() {
+    init();
+  }
   UserState() {
     init();
   }
 
-  User? _user;
-  static final auth = FirebaseAuth.instance;
-
   init() {
+    _user = auth.currentUser;
     FirebaseAuth.instance
                 .authStateChanges()
                 .listen((User? user) {
                   _user = user;
                 });
-    notifyListeners();
+
   }
-  
+
+  static Future<UserState> create() async {
+    var userState = UserState._();
+    if (userState.loggedIn) {
+      userState._dbProvider = await DbProvider.create(user: userState.user!);
+    }
+    return userState;
+  }
+
+  User? _user;
+  DbProvider? _dbProvider;
+  static final auth = FirebaseAuth.instance;
+
+
+  DbProvider? get dbProvider => _dbProvider;
   bool get loggedIn => _user != null;
   User? get user => _user;
+
 
   
 
@@ -37,6 +54,8 @@ class UserState extends ChangeNotifier {
         .catchError(
           (e) => status = AuthExceptionHandler.handleAuthException(e));
     if (status == AuthStatus.successful) {
+      _dbProvider = await DbProvider.create(user: _user!);
+      notifyListeners();
       context.go('/home/today');
     } else {
       displayMessageToUser(AuthExceptionHandler.generateErrorMessage(status), context);

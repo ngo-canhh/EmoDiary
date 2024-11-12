@@ -1,4 +1,4 @@
-import 'package:emodiary/user_state.dart';
+import 'package:emodiary/auth/user_state.dart';
 import 'package:flutter_swipe_button/flutter_swipe_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -57,7 +57,7 @@ class SplashScreen extends StatelessWidget{
                 padding: const EdgeInsets.fromLTRB(35, 0, 35, 0),
                 child: SwipeButton.expand(
                   activeThumbColor: colors.secondary,
-                  onSwipeEnd: () {
+                  onSwipe: () {
                     context.go(userState.loggedIn ? '/home/today' : '/auth/login');
                   },
                   child: Text(

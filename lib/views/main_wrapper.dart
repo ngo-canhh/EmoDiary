@@ -38,15 +38,14 @@ class _MainWrapperState extends State<MainWrapper> {
           });
           _goBranch(_selectedIndex);
         },
-        buttonBackgroundColor: Theme.of(context).highlightColor,
-        color: Theme.of(context).highlightColor,
+        buttonBackgroundColor: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).colorScheme.primary,
         backgroundColor: Theme.of(context).canvasColor,
         items: [
             FaIcon(FontAwesomeIcons.faceSmileWink, color: Theme.of(context).iconTheme.color,),
             FaIcon(FontAwesomeIcons.calendarDays, color: Theme.of(context).iconTheme.color,),
             FaIcon(FontAwesomeIcons.user, color: Theme.of(context).iconTheme.color,),
         ],
-        height: 60,
         animationCurve: Curves.fastLinearToSlowEaseIn,
       )
     );

@@ -1,0 +1,1 @@
+Thư mục chứa các views của ứng dụng

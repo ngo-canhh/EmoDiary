@@ -1,14 +1,12 @@
-import 'package:emodiary/theme/dark_mode.dart';
-import 'package:emodiary/theme/dark_pastel_mode.dart';
-import 'package:emodiary/theme/light_mode.dart';
-import 'package:emodiary/theme/pastel_mode.dart';
-import 'package:emodiary/user_state.dart';
+import 'package:emodiary/database/db_provider.dart';
+import 'package:emodiary/auth/user_state.dart';
 import 'package:emodiary/firebase_options.dart';
+import 'package:emodiary/theme/pink_pastel_mode.dart';
 import 'package:emodiary/views/forgot_pw_screen.dart';
 import 'package:emodiary/views/login_screen.dart';
 import 'package:emodiary/views/main_wrapper.dart';
 import 'package:emodiary/views/me_page.dart';
-import 'package:emodiary/views/notes_page.dart';
+import 'package:emodiary/views/calendar_page.dart';
 import 'package:emodiary/views/signup_screen.dart';
 import 'package:emodiary/views/splash_screen.dart';
 import 'package:emodiary/views/today_page.dart';
@@ -20,15 +18,15 @@ import 'package:go_router/go_router.dart';
 
 
 void main() async {
+  // Đảm bảo hđ của Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => UserState(),
-    builder: (context, child) => const App(),
-  ));
+  var userState = await UserState.create();
+
+  runApp(ChangeNotifierProvider.value(value: userState, child: App()));
 }
 
 final GoRouter _router = GoRouter(
@@ -41,7 +39,6 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/auth/login',
       builder: (context, state) {
-        // String? signUpBack = state.pathParameters['signUpBack'];
         return LoginScreen(); 
       },
     ),
@@ -56,8 +53,8 @@ final GoRouter _router = GoRouter(
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
         return MainWrapper(
-          navigationShell: navigationShell,
-        );
+            navigationShell: navigationShell,
+          );
       },
       branches: [
         StatefulShellBranch(
@@ -71,8 +68,8 @@ final GoRouter _router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/home/notes',
-              builder: (context, state) => NotesPage(),
+              path: '/home/calendar',
+              builder: (context, state) => CalendarPage(),
             )
           ]
         ),
@@ -89,16 +86,30 @@ final GoRouter _router = GoRouter(
   ],
 );
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
   const App({super.key});
 
   @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'EmoDiary',
-      theme: pastelMode,
-      darkTheme: darkPastelMode,
-      routerConfig: _router,
+    UserState userState = Provider.of<UserState>(context);
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: userState),
+        if (userState.loggedIn)
+          ChangeNotifierProvider.value(value: userState.dbProvider),
+      ],
+      child: MaterialApp.router(
+        title: 'EmoDiary',
+        theme: pinkPastelLightMode,
+        darkTheme: pinkPastelDarkMode,
+        routerConfig: _router,
+      ),
     );
   }
 }

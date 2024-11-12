@@ -1,0 +1,1 @@
+Thư mục này chứa các file cung cấp một số các hàm hỗ trợ cho toàn bộ ứng dụng
