@@ -14,6 +14,7 @@ class AuthTextfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return TextField(
       controller: controller,
       decoration: InputDecoration(
@@ -23,19 +24,18 @@ class AuthTextfield extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.secondary,
+            color: theme.colorScheme.primaryContainer,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.inversePrimary,
+            color: theme.colorScheme.primary,
           ),
         ),
-        fillColor: Theme.of(context).colorScheme.primary,
         hintText: hintText,
         hintStyle: TextStyle(
-          color: Theme.of(context).colorScheme.onSecondary,
+          color: theme.colorScheme.secondary.withOpacity(0.8),
           fontSize: 17,
         ),
       ),

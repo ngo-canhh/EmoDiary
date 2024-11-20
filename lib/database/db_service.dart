@@ -24,8 +24,11 @@ class DbService {
     _db = await openDatabase(
       join(await getDatabasesPath(), '$uid.db'),
       version: 1,
+      onConfigure: (db) async {
+        await db.execute('PRAGMA foreign_keys = ON');
+      },
       onCreate: (db, version) async {
-        for (var table in tables) {
+        for (var table in schema) {
           await db.execute(table);
         }
       },
@@ -42,66 +45,45 @@ class DbService {
 
   // Note CRUD operations
 
-  Future<void> createNote(Note note) async {
-    await _db!.insert(
+  Future<int> createNote(Note note) async {
+    int id = await _db!.insert(
       'Note',
       note.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    return id;
   }
 
   Future<List<Note>> getAllNotes() async {
     final allNotesMap = await _db!.query('Note');
     return [
-      for (final {
-        'id': id as int,
-        'title': title as String?,
-        'body': body as String?,
-        'media_urls': mediaUrls as String?,
-        'created_at': createdAt as String,
-        'mood_level': moodLevel as int?,
-        'is_private': isPrivate as int
-      } in allNotesMap)
-        Note(
-          id: id,
-          title: title,
-          body: body,
-          mediaUrls: mediaUrls,
-          createdAt: createdAt,
-          moodLevel: moodLevel,
-          isPrivate: isPrivate == 1,
-        ),
+      for (final note in allNotesMap)
+        Note.fromMap(note),
     ];
   }
 
-  Future<List<Note>> getNotesByDate(String date) async {
-    final notesMap = await _db!.query(
-      'Note',
-      where: "strftime('%Y-%m-%d', created_at) = ?",
-      whereArgs: [date],
-      orderBy: 'datetime(created_at) ASC',
+  Future<Map<Note, List<Tag>>> getNotesByDate(DateTime date) async {
+    final dateString = "${date.toIso8601String().substring(0, 10)}%";
+    final noteTagMap = await _db!.rawQuery(
+      '''
+      SELECT * 
+      FROM Note_tag
+      LEFT JOIN Note ON Note_tag.note_id = Note.note_id
+      LEFT JOIN Tag ON Note_tag.tag_id = Tag.tag_id
+      WHERE Note.created_at LIKE ?
+      ''',
+      [dateString]
     );
+    Map<Note, List<Tag>> noteTags = {};
+    for (final noteTag in noteTagMap) {
+      final note = Note.fromMap(noteTag);
+      noteTags[note] ??= <Tag>[]; 
+      if (noteTag['tag_id'] != null) {
+        noteTags[note]!.add(Tag.fromMap(noteTag));
+      }
+    }
 
-    return [
-      for (final {
-        'id': id as int,
-        'title': title as String?,
-        'body': body as String?,
-        'media_urls': mediaUrls as String?,
-        'created_at': createdAt as String,
-        'mood_level': moodLevel as int?,
-        'is_private': isPrivate as int
-      } in notesMap)
-        Note(
-          id: id,
-          title: title,
-          body: body,
-          mediaUrls: mediaUrls,
-          createdAt: createdAt,
-          moodLevel: moodLevel,
-          isPrivate: isPrivate == 1,
-        ),
-    ];
+    return noteTags;
   }
 
   Future<List<DateTime>> getStreaksInMonth(String yearMonth) async {
@@ -138,7 +120,7 @@ class DbService {
     await _db!.update(
       'Note',
       note.toMap(),
-      where: 'id = ?',
+      where: 'note_id = ?',
       whereArgs: [id],
     );
   }
@@ -146,39 +128,34 @@ class DbService {
   Future<void> deleteNote(int id) async {
     await _db!.delete(
       'Note',
-      where: 'id = ?',
+      where: 'note_id = ?',
       whereArgs: [id],
     );
   }
 
   // Tag CRUD operations
 
-  Future<void> createTag(Tag tag) async {
-    await _db!.insert(
+  Future<int> createTag(Tag tag) async {
+    int id = await _db!.insert(
       'Tag',
       tag.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    return id;
   }
 
   Future<List<Tag>> getAllTags() async {
     final allTagsMap = await _db!.query('Tag');
     return [
-      for (final {
-        'id': id as int,
-        'name': name as String,
-        'color': color as int?,
-        'scored': scored as int
-      } in allTagsMap)
-        Tag(id: id, name: name, color: color, scored: scored),
+      for (final tag in allTagsMap)
+        Tag.fromMap(tag),
     ];
   }
-
   Future<void> updateTag(Tag tag, int id) async {
     await _db!.update(
       'Tag',
       tag.toMap(),
-      where: 'id = ?',
+      where: 'tag_id = ?',
       whereArgs: [id],
     );
   }
@@ -186,42 +163,27 @@ class DbService {
   Future<void> deleteTag(int id) async {
     await _db!.delete(
       'Tag',
-      where: 'id = ?',
+      where: 'tag_id = ?',
       whereArgs: [id],
     );
   }
 
   // Memory CRUD operations
 
-  Future<void> createMemory(Memory memory) async {
-    await _db!.insert(
+  Future<int> createMemory(Memory memory) async {
+    int id = await _db!.insert(
       'Memory',
       memory.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    return id;
   }
 
   Future<List<Memory>> getAllMemories() async {
     final allMemoriesMap = await _db!.query('Memory');
     return [
-      for (final {
-        'id': id as int,
-        'name': name as String?,
-        'date': date as String?,
-        'time': time as String?,
-        'description': description as String?,
-        'created_at': createdAt as String,
-        'note_id': noteId as int?
-      } in allMemoriesMap)
-        Memory(
-          id: id,
-          name: name,
-          date: date,
-          time: time,
-          description: description,
-          createdAt: createdAt,
-          noteId: noteId,
-        ),
+      for (final memory in allMemoriesMap)
+        Memory.fromMap(memory),
     ];
   }
 
@@ -229,7 +191,7 @@ class DbService {
     await _db!.update(
       'Memory',
       memory.toMap(),
-      where: 'id = ?',
+      where: 'memory_id = ?',
       whereArgs: [id],
     );
   }
@@ -237,38 +199,27 @@ class DbService {
   Future<void> deleteMemory(int id) async {
     await _db!.delete(
       'Memory',
-      where: 'id = ?',
+      where: 'memory_id = ?',
       whereArgs: [id],
     );
   }
 
   // Notification CRUD operations
 
-  Future<void> createNotification(Notification notification) async {
-    await _db!.insert(
+  Future<int> createNotification(Notification notification) async {
+    int id = await _db!.insert(
       'Notification',
       notification.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    return id;
   }
 
   Future<List<Notification>> getAllNotifications() async {
     final allNotificationsMap = await _db!.query('Notification');
     return [
-      for (final {
-        'id': id as int, 
-        'date': date as String,
-        'time': time as String,
-        'location': location as String,
-        'memory_id': memoryId as int?
-      } in allNotificationsMap)
-        Notification(
-          id: id,
-          date: date,
-          time: time,
-          location: location,
-          memoryId: memoryId,
-        ),
+      for (final notification in allNotificationsMap)
+        Notification.fromMap(notification),
     ];
   }
 
@@ -276,7 +227,7 @@ class DbService {
     await _db!.update(
       'Notification',
       notification.toMap(),
-      where: 'id = ?',
+      where: 'notification_id = ?',
       whereArgs: [id],
     );
   }
@@ -284,19 +235,28 @@ class DbService {
   Future<void> deleteNotification(int id) async {
     await _db!.delete(
       'Notification',
-      where: 'id = ?',
+      where: 'notification_id = ?',
       whereArgs: [id],
     );
   }
 
   // NoteTag operations (insert and delete only as it represents a relationship)
 
-  Future<void> createNoteTag(NoteTag noteTag) async {
-    await _db!.insert(
+  Future<List<Map<String, Object?>>> getNoteTag() async {
+    final allNoteTags = await _db!.query(
+      'Note_tag',
+    );
+
+    return allNoteTags;
+  }
+
+  Future<int> createNoteTag(NoteTag noteTag) async {
+    int id = await _db!.insert(
       'Note_tag',
       noteTag.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    return id;
   }
 
   Future<void> deleteNoteTag(int noteId, int tagId) async {
@@ -307,5 +267,12 @@ class DbService {
     );
   }
 
+  Future<void> deleteTagofNote(int noteId) async {
+    await _db!.delete(
+      'Note_tag',
+      where: 'note_id = ?',
+      whereArgs: [noteId],
+    );
+  }
 
 }

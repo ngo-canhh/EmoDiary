@@ -26,10 +26,9 @@ class _MainWrapperState extends State<MainWrapper> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      body: SafeArea(
-        child: widget.navigationShell,
-      ),
+      body: widget.navigationShell,
       bottomNavigationBar: CurvedNavigationBar(
         index: _selectedIndex,
         onTap: (index) {
@@ -38,13 +37,13 @@ class _MainWrapperState extends State<MainWrapper> {
           });
           _goBranch(_selectedIndex);
         },
-        buttonBackgroundColor: Theme.of(context).colorScheme.primary,
-        color: Theme.of(context).colorScheme.primary,
-        backgroundColor: Theme.of(context).canvasColor,
+        buttonBackgroundColor: theme.colorScheme.primaryContainer,
+        color: theme.colorScheme.primaryContainer,
+        backgroundColor: theme.scaffoldBackgroundColor,
         items: [
-            FaIcon(FontAwesomeIcons.faceSmileWink, color: Theme.of(context).iconTheme.color,),
-            FaIcon(FontAwesomeIcons.calendarDays, color: Theme.of(context).iconTheme.color,),
-            FaIcon(FontAwesomeIcons.user, color: Theme.of(context).iconTheme.color,),
+            FaIcon(FontAwesomeIcons.faceSmileWink, color: theme.colorScheme.onPrimaryContainer,),
+            FaIcon(FontAwesomeIcons.calendarDays, color: theme.colorScheme.onPrimaryContainer,),
+            FaIcon(FontAwesomeIcons.user, color: theme.colorScheme.onPrimaryContainer,),
         ],
         animationCurve: Curves.fastLinearToSlowEaseIn,
       )

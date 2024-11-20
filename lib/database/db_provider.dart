@@ -1,9 +1,7 @@
-import 'package:emodiary/auth/user_state.dart';
 import 'package:emodiary/database/db_service.dart';
 import 'package:emodiary/database/entity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DbProvider extends ChangeNotifier {
   late User user;
@@ -30,9 +28,6 @@ class DbProvider extends ChangeNotifier {
     datesForStreaks.addAll(streaks);
   }
 
-  Future<void> loadStreaks() async {
-  }
-
   // Delete all user data
   Future<void> deleteUserData() async {
     await dbService.deleteDb();
@@ -42,29 +37,43 @@ class DbProvider extends ChangeNotifier {
 
   // create a new note
   Future<void> createNote({
-    required String title,
-    required String body,
-    String? mediaUrls,
-    int? moodLevel,
-    DateTime? createdAt,
-    required bool isPrivate,
+    required Note note,
+    required List<Tag> tags,
   }) async {
-    createdAt ??= DateTime.now();
-    await dbService.createNote(Note(
-        title: title,
-        body: body,
-        mediaUrls: mediaUrls,
-        moodLevel: moodLevel,
-        createdAt: createdAt.toIso8601String(),
-        isPrivate: isPrivate));
-    datesForStreaks.add(createdAt);
+    note.id = await dbService.createNote(note);
+
+    datesForStreaks.add(DateTime.parse(note.createdAt));
+
+    if (tags.isEmpty) {
+      await dbService.createNoteTag(NoteTag(noteId: note.id!));
+    }
+
+    for (Tag tag in tags) {
+      await dbService.createNoteTag(NoteTag(noteId: note.id!, tagId: tag.id));
+    }
     notifyListeners();
   }
 
-  // get note by date
-  Future<List<Note>> getNotesByDate(DateTime date) async {
-    final notesInDate = await dbService.getNotesByDate(date.toIso8601String().substring(0, 10));
-    return notesInDate;
+  Future<void> updateNote({
+    required Note note,
+    required List<Tag> tags,
+  }) async {
+    await dbService.updateNote(note, note.id!);
+    await dbService.deleteTagofNote(note.id!);
+    if (tags.isEmpty) {
+      await dbService.createNoteTag(NoteTag(noteId: note.id!));
+    }
+
+    for (Tag tag in tags) {
+      await dbService.createNoteTag(NoteTag(noteId: note.id!, tagId: tag.id));
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteNote(Note note) async {
+    datesForStreaks.remove(DateTime.parse(note.createdAt));
+    await dbService.deleteNote(note.id!);
+    notifyListeners();
   }
 
   Future<List<DateTime>> getStreaksInMonth(DateTime date) async {
@@ -72,9 +81,4 @@ class DbProvider extends ChangeNotifier {
     return streaks;
   }
 
-  // get all note
-  Future<List<Note>> getAllNotes() async {
-    final allNotes = await dbService.getAllNotes();
-    return allNotes;
-  }
 }

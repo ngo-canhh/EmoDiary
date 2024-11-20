@@ -1,7 +1,7 @@
-final tables = [
+final schema = [
   '''
   CREATE TABLE Tag (
-    id INTEGER PRIMARY KEY,
+    tag_id INTEGER PRIMARY KEY,
     name TEXT NOT NULL UNIQUE,
     color INTEGER,
     scored INTEGER NOT NULL
@@ -9,7 +9,7 @@ final tables = [
   ''',
   '''
   CREATE TABLE Note (
-    id INTEGER PRIMARY KEY,
+    note_id INTEGER PRIMARY KEY,
     title TEXT,
     body TEXT,
     media_urls TEXT,
@@ -20,32 +20,32 @@ final tables = [
   ''',
   '''
   CREATE TABLE Memory (
-    id INTEGER PRIMARY KEY,
+    memory_id INTEGER PRIMARY KEY,
     name TEXT,
     date TEXT,
     time TEXT,
     description TEXT,
     created_at TEXT NOT NULL,
     note_id INTEGER,
-    FOREIGN KEY(note_id) REFERENCES note(id)
+    FOREIGN KEY(note_id) REFERENCES note(note_id) ON DELETE SET NULL
   );
   ''',
   '''
   CREATE TABLE Notification (
-    id INTEGER PRIMARY KEY,
+    notification_id INTEGER PRIMARY KEY,
     date TEXT NOT NULL,
     time TEXT NOT NULL,
     location TEXT NOT NULL,
     memory_id INTEGER,
-    FOREIGN KEY(memory_id) REFERENCES memory(id)
+    FOREIGN KEY(memory_id) REFERENCES memory(memory_id) ON DELETE CASCADE
   );
   ''',
   '''
   CREATE TABLE Note_tag (
     note_id INTEGER NOT NULL,
-    tag_id INTEGER NOT NULL,
+    tag_id INTEGER,
     PRIMARY KEY(note_id, tag_id),
-    FOREIGN KEY(note_id) REFERENCES note(id),
-    FOREIGN KEY(tag_id) REFERENCES tag(id)
+    FOREIGN KEY(note_id) REFERENCES note(note_id) ON DELETE CASCADE,
+    FOREIGN KEY(tag_id) REFERENCES tag(tag_id) ON DELETE SET NULL
   );
   '''];

@@ -11,17 +11,10 @@ class SplashScreen extends StatelessWidget{
   Widget build(BuildContext context) {
 
     UserState userState = Provider.of<UserState>(context);
-    ColorScheme colors = Theme.of(context).colorScheme;
-
-    // delay
-    // Future.delayed(Duration(seconds: 2), () {
-    //   if (context.mounted) {
-    //     context.go(userState.loggedIn ? '/home/today' : '/auth/login');
-    //   }
-    // });
+    ThemeData theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: colors.surface,
+      backgroundColor: theme.canvasColor,
       body: Center(
         child: Column(
           children: [
@@ -35,7 +28,7 @@ class SplashScreen extends StatelessWidget{
                   FaIcon(
                     FontAwesomeIcons.featherPointed,
                     size: MediaQuery.of(context).size.width * 0.3,
-                    color: colors.inversePrimary,
+                    color: theme.colorScheme.primary,
                   ),
                   SizedBox(height: 10,),
                   // app name
@@ -44,7 +37,7 @@ class SplashScreen extends StatelessWidget{
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: colors.inversePrimary
+                      color: theme.colorScheme.primary
                     ),
                   ),
                 ],
@@ -56,7 +49,8 @@ class SplashScreen extends StatelessWidget{
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(35, 0, 35, 0),
                 child: SwipeButton.expand(
-                  activeThumbColor: colors.secondary,
+                  activeThumbColor: theme.colorScheme.primary,
+                  inactiveThumbColor: theme.colorScheme.primary,
                   onSwipe: () {
                     context.go(userState.loggedIn ? '/home/today' : '/auth/login');
                   },
@@ -64,7 +58,7 @@ class SplashScreen extends StatelessWidget{
                     'Swipe to start ...',
                     style: TextStyle(
                       fontSize: 15,
-                      color: colors.inversePrimary
+                      color: theme.colorScheme.onSurface
                     ),
                   ),
                 ),

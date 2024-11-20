@@ -35,7 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final userState = Provider.of<UserState>(context);
     return OverlayLoaderWithAppIcon(
       isLoading: _isLoading,
-      appIcon: Icon(Icons.person),
+      circularProgressColor: colors.primary,
+      overlayBackgroundColor: colors.surfaceContainer,
+      appIcon: Icon(Icons.person, color: colors.primary,),
       child: Scaffold(
         body: SafeArea(
           child: Center(
@@ -46,10 +48,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // app icon
                     FaIcon(
                       FontAwesomeIcons.featherPointed,
                       size: MediaQuery.of(context).size.width * 0.28,
-                      color: colors.inversePrimary,
+                      color: colors.primary,
                     ),
                     SizedBox(height: 5,),
                 
@@ -59,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: colors.inversePrimary
+                        color: colors.primary
                       ),
                     ),
                     SizedBox(height: 50,),
@@ -126,12 +129,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                       textStyle: TextStyle(
-                        color: colors.inversePrimary,
+                        color: colors.onPrimaryContainer,
                         fontSize: 20,
                       ),
-                      backgroundColor: colors.primary,
-                      selectedTextColor: colors.primary,
-                      selectedBackgroundColor: colors.inversePrimary,
+                      backgroundColor: colors.primaryContainer,
+                      selectedTextColor: colors.onSecondaryContainer.withOpacity(0.7),
+                      selectedBackgroundColor: colors.secondaryContainer.withOpacity(0.7),
                       transitionType: TransitionType.CENTER_ROUNDER,
                 
                     ),
@@ -145,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           "Don't have an account? ",
                           style: TextStyle(
-                            color: colors.onSecondary,
+                            color: colors.onSurface,
                             fontSize: 15
                           ),
                         ),
@@ -156,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             'Sign up now!',
                             style: TextStyle(
-                              color: colors.inversePrimary,
+                              color: colors.primaryFixed,
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),

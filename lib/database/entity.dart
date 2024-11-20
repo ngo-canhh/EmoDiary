@@ -12,10 +12,29 @@ class Tag {
   });
 
   Map<String, Object?> toMap() => {
-        'name': name, 
-        'color': color, 
-        'scored': scored
+        'name': name,
+        'color': color,
+        'scored': scored,
       };
+
+  factory Tag.fromMap(Map<String, Object?> map) {
+    return Tag(
+      id: map['tag_id'] as int?,
+      name: map['name'] as String,
+      color: map['color'] as int?,
+      scored: map['scored'] as int,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Tag) return false;
+    return id == other.id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 
   @override
   String toString() => 'Tag(id: $id, name: $name, color: $color, scored: $scored)';
@@ -49,6 +68,28 @@ class Note {
         'is_private': isPrivate ? 1 : 0,
       };
   
+  factory Note.fromMap(Map<String, Object?> map) {
+    return Note(
+      id: map['note_id'] as int?,
+      title: map['title'] as String?,
+      body: map['body'] as String?,
+      mediaUrls: map['media_urls'] as String?,
+      createdAt: map['created_at'] as String,
+      moodLevel: map['mood_level'] as int?,
+      isPrivate: (map['is_private'] as int) == 1,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Note) return false;
+    return id == other.id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
   @override
   String toString() => 'Note(id: $id, title: $title, body: $body, mediaUrls: $mediaUrls, createdAt: $createdAt, moodLevel: $moodLevel, isPrivate: $isPrivate)';
 }
@@ -81,6 +122,28 @@ class Memory {
         'note_id': noteId,
       };
 
+  factory Memory.fromMap(Map<String, Object?> map) {
+    return Memory(
+      id: map['memory_id'] as int?,
+      name: map['name'] as String?,
+      date: map['date'] as String?,
+      time: map['time'] as String?,
+      description: map['description'] as String?,
+      createdAt: map['created_at'] as String,
+      noteId: map['note_id'] as int?,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Memory) return false;
+    return id == other.id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
   @override
   String toString() => 'Memory(id: $id, name: $name, date: $date, time: $time, description: $description, createdAt: $createdAt, noteId: $noteId)';
 }
@@ -107,23 +170,50 @@ class Notification {
         'memory_id': memoryId,
       };
 
+  factory Notification.fromMap(Map<String, Object?> map) {
+    return Notification(
+      id: map['notification_id'] as int?,
+      date: map['date'] as String,
+      time: map['time'] as String,
+      location: map['location'] as String,
+      memoryId: map['memory_id'] as int?,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! Notification) return false;
+    return id == other.id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+
   @override
   String toString() => 'Notification(id: $id, date: $date, time: $time, location: $location, memoryId: $memoryId)';
 }
 
 class NoteTag {
   int noteId;
-  int tagId;
+  int? tagId;
 
   NoteTag({
     required this.noteId,
-    required this.tagId,
+    this.tagId,
   });
 
   Map<String, Object?> toMap() => {
         'note_id': noteId,
         'tag_id': tagId,
       };
+
+  factory NoteTag.fromMap(Map<String, Object?> map) {
+    return NoteTag(
+      noteId: map['note_id'] as int,
+      tagId: map['tag_id'] != null ? map['tag_id'] as int : null,
+    );
+  }
 
   @override
   String toString() => 'NoteTag(noteId: $noteId, tagId: $tagId)';
