@@ -82,7 +82,7 @@ class App extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        // ChangeNotifierProvider.value(value: userState),
+        ChangeNotifierProvider.value(value: userState),
         if (userState.loggedIn)
           ChangeNotifierProvider.value(value: userState.dbProvider),
       ],
@@ -100,7 +100,7 @@ class App extends StatelessWidget {
         darkTheme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             dynamicSchemeVariant: DynamicSchemeVariant.content,
-            seedColor: Color(0xff374A41),
+            seedColor: userState.color,
             brightness: Brightness.dark,
           ),
           useMaterial3: true,

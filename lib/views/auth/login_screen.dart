@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     FaIcon(
                       FontAwesomeIcons.featherPointed,
                       size: MediaQuery.of(context).size.width * 0.28,
-                      color: colors.primary,
+                      color: colors.secondary,
                     ),
                     SizedBox(height: 5,),
                 
@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
-                        color: colors.primary
+                        color: colors.secondary
                       ),
                     ),
                     SizedBox(height: 50,),
@@ -129,12 +129,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                       textStyle: TextStyle(
-                        color: colors.onPrimaryContainer,
+                        color: colors.onPrimary,
                         fontSize: 20,
                       ),
-                      backgroundColor: colors.primaryContainer,
-                      selectedTextColor: colors.onSecondaryContainer.withOpacity(0.7),
-                      selectedBackgroundColor: colors.secondaryContainer.withOpacity(0.7),
+                      backgroundColor: colors.primary,
+                      selectedTextColor: colors.onPrimary.withOpacity(0.7),
+                      selectedBackgroundColor: colors.primary.withOpacity(0.7),
                       transitionType: TransitionType.CENTER_ROUNDER,
                 
                     ),
@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             'Sign up now!',
                             style: TextStyle(
-                              color: colors.primaryFixed,
+                              color: colors.primary,
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),

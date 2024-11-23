@@ -51,7 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   FaIcon(
                     FontAwesomeIcons.featherPointed,
                     size: MediaQuery.of(context).size.width * 0.28,
-                    color: colors.inversePrimary,
+                    color: colors.secondary,
                   ),
                   SizedBox(height: 5,),
               
@@ -61,7 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: colors.inversePrimary
+                      color: colors.secondary
                     ),
                   ),
                   SizedBox(height: 50,),
@@ -118,12 +118,12 @@ class _SignupScreenState extends State<SignupScreen> {
                       });
                     },
                     textStyle: TextStyle(
-                      color: colors.inversePrimary,
+                      color: colors.onPrimary,
                       fontSize: 20,
                     ),
                     backgroundColor: colors.primary,
-                    selectedTextColor: colors.primary,
-                    selectedBackgroundColor: colors.inversePrimary,
+                    selectedTextColor: colors.onPrimary,
+                    selectedBackgroundColor: colors.primary,
                     transitionType: TransitionType.CENTER_ROUNDER,
                   ),
                   SizedBox(height: 10,),
@@ -136,7 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       Text(
                         "Already have an account? ",
                         style: TextStyle(
-                          color: colors.onSecondary,
+                          color: colors.onSurface,
                           fontSize: 15
                         ),
                       ),
@@ -147,7 +147,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: Text(
                           'Log in now!',
                           style: TextStyle(
-                            color: colors.inversePrimary,
+                            color: colors.primary,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),

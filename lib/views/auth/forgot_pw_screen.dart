@@ -49,7 +49,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                   FaIcon(
                     FontAwesomeIcons.featherPointed,
                     size: MediaQuery.of(context).size.width * 0.28,
-                    color: colors.inversePrimary,
+                    color: colors.secondary,
                   ),
                   SizedBox(height: 5,),
               
@@ -59,7 +59,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: colors.inversePrimary
+                      color: colors.secondary
                     ),
                   ),
                   SizedBox(height: 40,),
@@ -74,7 +74,8 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                         child: Text(
                           'Enter your email:',
                           style: TextStyle(
-                            fontSize: 20
+                            fontSize: 20,
+                            color: colors.onSurface
                           ),
                         ),
                       ),
@@ -105,7 +106,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                                 Text(
                                   'Send',
                                   style: TextStyle(
-                                  color: colors.inversePrimary,
+                                  color: colors.primary,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   ),
@@ -113,7 +114,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                                 Text(
                                   'OTP',
                                   style: TextStyle(
-                                  color: colors.inversePrimary,
+                                  color: colors.primary,
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   ),
@@ -227,7 +228,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                       Text(
                         "Remember your password? ",
                         style: TextStyle(
-                          color: colors.onSecondary,
+                          color: colors.onSurface,
                           fontSize: 15
                         ),
                       ),
@@ -238,7 +239,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                         child: Text(
                           'Log in!',
                           style: TextStyle(
-                            color: colors.inversePrimary,
+                            color: colors.primary,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                           ),

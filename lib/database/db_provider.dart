@@ -76,6 +76,11 @@ class DbProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> deleteTag(Tag tag) async {
+    dbService.deleteTag(tag.id!);
+    notifyListeners();
+  }
+
   Future<List<DateTime>> getStreaksInMonth(DateTime date) async {
     final streaks = await dbService.getStreaksInMonth(date.toIso8601String().substring(0, 7));
     return streaks;

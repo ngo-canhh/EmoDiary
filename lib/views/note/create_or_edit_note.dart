@@ -10,7 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
 class CreateOrEditNote extends StatefulWidget {
-  const CreateOrEditNote({super.key, this.existNote, this.existTags, this.selectDate});
+  const CreateOrEditNote(
+      {super.key, this.existNote, this.existTags, this.selectDate});
 
   final Note? existNote;
   final List<Tag>? existTags;
@@ -37,7 +38,13 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
   void initState() {
     super.initState();
     if (widget.existNote == null) {
-      note = Note(title: '', body: '', createdAt: widget.selectDate == null ? DateTime.now().toIso8601String() : widget.selectDate!.toIso8601String(), isPrivate: false);
+      note = Note(
+          title: '',
+          body: '',
+          createdAt: widget.selectDate == null
+              ? DateTime.now().toIso8601String()
+              : widget.selectDate!.toIso8601String(),
+          isPrivate: false);
       tags = <Tag>{};
       isNoteNew = true;
     } else {
@@ -58,7 +65,9 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
         children: [
           ListView(
             children: [
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
               // tag box
               Padding(
                 padding: const EdgeInsets.all(8),
@@ -66,16 +75,19 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      for (Tag tag in tags) 
-                        TagCard(
-                          tag: tag, 
-                          onDoubleTap: (tag) {
-                            setState(() {
-                              isDirty = true;
-                              tags.remove(tag);
-                            });
-                          },
-                      ),
+                      for (Tag tag in tags)
+                        Container(
+                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          child: TagCard(
+                            tag: tag,
+                            onDoubleTap: (tag) {
+                              setState(() {
+                                isDirty = true;
+                                tags.remove(tag);
+                              });
+                            },
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -149,147 +161,113 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
             ],
           ),
 
-
           // Tools
           ClipRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
               child: Container(
                 // height: 100,
-                color: theme.primaryColor,
+                color: theme.colorScheme.secondaryContainer,
                 child: SafeArea(
-                  child: Row(
-                    children: [
-                      // back button
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }, 
-                        icon: Icon(Icons.arrow_back, color: theme.colorScheme.onPrimary,),
+                    child: Row(
+                  children: [
+                    // back button
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(
+                        Icons.arrow_back,
+                        color: theme.colorScheme.onSecondaryContainer,
                       ),
-                      Spacer(),
+                    ),
+                    Spacer(),
 
-                      // hide button
-                      IconButton(
-                        onPressed: () {
-                          // handle hide
-                        }, 
-                        icon: FaIcon(note.isPrivate ? FontAwesomeIcons.eyeSlash : FontAwesomeIcons.eye, color: theme.colorScheme.onPrimary,),
+                    // hide button
+                    IconButton(
+                      onPressed: () {
+                        // handle hide
+                      },
+                      icon: FaIcon(
+                        note.isPrivate
+                            ? FontAwesomeIcons.eyeSlash
+                            : FontAwesomeIcons.eye,
+                        color: theme.colorScheme.onSecondaryContainer,
                       ),
+                    ),
 
-                      // add tag button
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _showTagList = true;
-                          });
-                        }, 
-                        icon: FaIcon(FontAwesomeIcons.tag, color: theme.colorScheme.onPrimary,),
-                      ),
-
-                      // delete button
-                      IconButton(
-                        onPressed: _handleDelete, 
-                        icon: FaIcon(FontAwesomeIcons.trashCan, color: theme.colorScheme.onPrimary,),
-                      ),
-
-                      // Save button
-                      if (isDirty)
-                        AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
-                          margin: EdgeInsets.only(left: 10),
-                          width: 110,
-                          height: 40,
-                          curve: Curves.decelerate,
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: theme.colorScheme.primaryContainer,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: const Radius.circular(100),
-                                  bottomLeft: const Radius.circular(100),
-                                )
-                              ) 
-                            ),
-                            onPressed: _handleSave, 
-                            icon: FittedBox(child: Icon(Icons.done, color: theme.colorScheme.onPrimaryContainer,),),
-                            label: Text(
-                              'SAVE',
-                              style: TextStyle(letterSpacing: 0, color: theme.colorScheme.onPrimaryContainer),
-                            )
-                          ),
-                        ),
-                    ],
-                  )
-                ),
-              ),
-            ),
-          ),
-
-          // tags list
-          if (_showTagList) ... [
-            AnimatedOpacity(
-              opacity: 0.5,
-              duration: Duration(milliseconds: 1000),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showTagList = false;
-                  });
-                },
-                child: Container(
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            Center(
-              child: AnimatedScale(
-                scale: _showTagList ? 1 : 0.5,
-                duration: Duration(milliseconds: 300),
-                child: Container(
-                  width: 300,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TagListView(
-                        onTap: (tag) {
+                    // add tag button
+                    IconButton(
+                      onPressed: () {
+                        _handleAddTag(addTag: (tag) {
                           setState(() {
                             tags.add(tag);
                             isDirty = true;
                           });
-                        },
+                        });
+                      },
+                      icon: FaIcon(
+                        FontAwesomeIcons.tag,
+                        color: theme.colorScheme.onSecondaryContainer,
                       ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _showTagList = false;
-                          });
-                        },
-                        child: Text("Close"),
+                    ),
+
+                    // delete button
+                    IconButton(
+                      onPressed: _handleDeleteNote,
+                      icon: FaIcon(
+                        FontAwesomeIcons.trashCan,
+                        color: theme.colorScheme.onSecondaryContainer,
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+
+                    // Save button
+                    if (isDirty)
+                      AnimatedContainer(
+                        duration: Duration(milliseconds: 500),
+                        margin: EdgeInsets.only(left: 10),
+                        width: 110,
+                        height: 45,
+                        curve: Curves.decelerate,
+                        child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    theme.colorScheme.primaryContainer,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                  topLeft: const Radius.circular(100),
+                                  bottomLeft: const Radius.circular(100),
+                                ))),
+                            onPressed: _handleSaveNote,
+                            icon: FittedBox(
+                              child: Icon(
+                                Icons.done,
+                                color: theme.colorScheme.onPrimaryContainer,
+                              ),
+                            ),
+                            label: Text(
+                              'SAVE',
+                              style: TextStyle(
+                                  letterSpacing: 0,
+                                  color: theme.colorScheme.onPrimaryContainer),
+                            )),
+                      ),
+                  ],
+                )),
               ),
             ),
-          ]
+          ),
         ],
       ),
     );
   }
 
-  void _handleDelete() async {
+  void _handleDeleteNote() async {
     if (isNoteNew) {
       Navigator.pop(context);
     } else {
       showDialog(
-        context: context, 
+        context: context,
         builder: (context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
@@ -299,35 +277,32 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
             content: Text('This note will be deleted permanently'),
             actions: [
               TextButton(
-                onPressed: () async {
-                  await dbProvider!.deleteNote(note);
-                  // Navigator.popUntil(context, ModalRoute.withName('/home/calendar'));
-                  Navigator.pop(context);
-                  // if (Navigator.canPop(context)) Navigator.pop(context);
-                  context.pop();
-                }, 
-                child: Text(
-                  'DELETE',
-                  style: TextStyle(
-                    color: Colors.red.shade300,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
-                  ),
-                )
-              ),
-
+                  onPressed: () async {
+                    await dbProvider!.deleteNote(note);
+                    // Navigator.popUntil(context, ModalRoute.withName('/home/calendar'));
+                    Navigator.pop(context);
+                    // if (Navigator.canPop(context)) Navigator.pop(context);
+                    context.pop();
+                  },
+                  child: Text(
+                    'DELETE',
+                    style: TextStyle(
+                      color: Colors.red.shade300,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  )),
               TextButton(
-                onPressed: () {
-                  context.pop();
-                }, 
-                child: Text(
-                  'CANCEL',
-                  style: TextStyle(
-                    fontWeight:  FontWeight.w500,
-                    letterSpacing: 1,
-                  ),
-                )
-              ),
+                  onPressed: () {
+                    context.pop();
+                  },
+                  child: Text(
+                    'CANCEL',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1,
+                    ),
+                  )),
             ],
           );
         },
@@ -335,7 +310,7 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
     }
   }
 
-  void _handleSave() async {
+  void _handleSaveNote() async {
     setState(() {
       note.title = titleController.text;
       note.body = bodyController.text;
@@ -351,6 +326,32 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
 
     titleFocus.unfocus();
     bodyFocus.unfocus();
+  }
+
+  void _handleAddTag({required Function(Tag tag) addTag}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ConstrainedBox(
+          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+          child: AlertDialog(
+            title: Text('Tags'),
+            content: TagListView(
+              onTap: (tag) {
+                addTag(tag);
+              },
+            ),
+            actions: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Done'))
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override

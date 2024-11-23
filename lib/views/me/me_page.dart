@@ -2,7 +2,9 @@ import 'package:easy_radio/easy_radio.dart';
 import 'package:emodiary/auth/user_state.dart';
 import 'package:emodiary/components/auth_textfield.dart';
 import 'package:emodiary/components/stateful_textfield.dart';
+import 'package:emodiary/components/tag_manager.dart';
 import 'package:emodiary/database/db_provider.dart';
+import 'package:emodiary/database/entity.dart';
 import 'package:emodiary/helper/helper_function.dart';
 import 'package:emodiary/views/me/me_tile.dart';
 import 'package:emodiary/views/me/profile_card.dart';
@@ -22,15 +24,15 @@ class _MePageState extends State<MePage> {
   @override
   Widget build(BuildContext context) {
     UserState userState = Provider.of<UserState>(context);
-    ThemeData theme = Theme.of(context);
+    DbProvider dbProvider = Provider.of<DbProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Setting',
-          style: TextStyle(color: theme.colorScheme.onPrimary),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
         ),
-        backgroundColor: theme.colorScheme.primary,
+        // backgroundColor: theme.colorScheme.primary,
       ),
       body: ListView(
         children: [
@@ -73,6 +75,27 @@ class _MePageState extends State<MePage> {
                               _handleChangePassWord(userState);
                             },
                             icon: FaIcon(FontAwesomeIcons.penToSquare))
+                      ],
+                    ),
+                  ),
+                ],
+              )),
+          MeTile(
+              leading: 'Tag',
+              child: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(right: 10, left: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Tag manager'),
+                        Spacer(),
+                        IconButton(
+                            onPressed: () {
+                              _handleTagManager();
+                            },
+                            icon: FaIcon(FontAwesomeIcons.tags))
                       ],
                     ),
                   ),
@@ -170,24 +193,33 @@ class _MePageState extends State<MePage> {
             content: StatefulTextfield(
               fields: ['New password', 'Confirm password'],
               onSubmit: (controllers, fields) async {
-                if (controllers['New password']!.text != controllers['Confirm password']!.text) {
+                if (controllers['New password']!.text !=
+                    controllers['Confirm password']!.text) {
                   displayMessageToUser('Password not match', context);
                   controllers['Confirm password']!.clear();
                 } else {
-                  bool success = await userState.changePassword(context, controllers['New password']!.text);
+                  bool success = await userState.changePassword(
+                      context, controllers['New password']!.text);
                   if (success) {
                     Navigator.pop(context);
                   } else {
                     controllers['New password']!.clear();
                     controllers['Confirm password']!.clear();
                   }
-                                
                 }
               },
               obscureText: true,
             ),
           );
         });
+  }
+
+  _handleTagManager() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => TagManager(),
+        ));
   }
 
   void _handleChangeUsername(UserState userState) async {
@@ -213,18 +245,15 @@ class _MePageState extends State<MePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Change light color'),
+          title: Text('Main color'),
           content: SingleChildScrollView(
-            child: HueRingPicker(
-              enableAlpha: true,
-              pickerColor: pickerColor,
-              onColorChanged: (value) {
-                setState(() {
-                  pickerColor = value;
-                });
-              },
-            ),
-          ),
+              child: MaterialPicker(
+                  pickerColor: pickerColor,
+                  onColorChanged: (value) {
+                    setState(() {
+                      pickerColor = value;
+                    });
+                  })),
           actions: [
             ElevatedButton(
                 onPressed: () async {

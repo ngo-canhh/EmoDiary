@@ -28,7 +28,7 @@ class SplashScreen extends StatelessWidget{
                   FaIcon(
                     FontAwesomeIcons.featherPointed,
                     size: MediaQuery.of(context).size.width * 0.3,
-                    color: theme.colorScheme.primary,
+                    color: theme.colorScheme.secondary,
                   ),
                   SizedBox(height: 10,),
                   // app name
@@ -37,7 +37,7 @@ class SplashScreen extends StatelessWidget{
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.primary
+                      color: theme.colorScheme.secondary
                     ),
                   ),
                 ],
@@ -49,8 +49,8 @@ class SplashScreen extends StatelessWidget{
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(35, 0, 35, 0),
                 child: SwipeButton.expand(
-                  activeThumbColor: theme.colorScheme.primary,
-                  inactiveThumbColor: theme.colorScheme.primary,
+                  activeThumbColor: theme.colorScheme.secondary,
+                  inactiveThumbColor: theme.colorScheme.secondary,
                   onSwipe: () {
                     context.go(userState.loggedIn ? '/home/today' : '/auth/login');
                   },

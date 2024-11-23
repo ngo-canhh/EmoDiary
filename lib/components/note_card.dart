@@ -18,6 +18,7 @@ class NoteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final noteColor = mixColorsFromTag(tags, theme.colorScheme.primaryContainer);
+    final contentColor = ThemeData.estimateBrightnessForColor(noteColor) == Brightness.dark ? Colors.white : Colors.black87;
 
 
     return Container(
@@ -54,7 +55,8 @@ class NoteCard extends StatelessWidget {
                   note.title!.trim().length <= 10 ? note.title!.trim() : '${note.title!.trim().substring(0, 10)} ...',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
+                    color: contentColor,
                   ),
                 ),
                 Container(
@@ -62,7 +64,9 @@ class NoteCard extends StatelessWidget {
                   child: Text(
                     note.body!.trim().split("\n").first.length <= 25 ? note.body!.trim().split("\n").first : '${note.body!.trim().split("\n").first.substring(0, 25)} ...',
                     style: TextStyle(
-                      fontSize: 14
+                      fontSize: 14,
+                      color: contentColor,
+
                     ),
                   ),
                 ),
@@ -74,7 +78,9 @@ class NoteCard extends StatelessWidget {
                     child: Row(
                       children: [
                         for (final tag in tags) 
-                          TagCard(tag: tag),
+                          Container(
+                            padding: EdgeInsets.only(left: 5, right: 5),
+                            child: TagCard(tag: tag, height: 32,)),
                       ],
                     ),
                   ),
@@ -86,6 +92,7 @@ class NoteCard extends StatelessWidget {
                     dateFormatter.format(DateTime.parse(note.createdAt)),
                     style: TextStyle(
                       fontSize: 12,
+                      color: contentColor,
                     ),
                   ),
                 )
