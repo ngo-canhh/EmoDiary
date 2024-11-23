@@ -1,6 +1,6 @@
 import 'package:emodiary/components/tag_card.dart';
 import 'package:emodiary/database/entity.dart';
-import 'package:emodiary/helper/mix_colors.dart';
+import 'package:emodiary/helper/helper_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

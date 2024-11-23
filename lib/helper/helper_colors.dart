@@ -32,3 +32,15 @@ Color mixColorsFromTag(List<Tag> tags, Color primary) {
     b.round(),
   );
 }
+
+Color adjustColorForDarkMode(Color color) {
+  double lightnessFactor = 0.6;
+  // Chuyển đổi màu RGB sang HSL
+  final hsl = HSLColor.fromColor(color);
+  
+  // Giảm độ sáng (lightness)
+  final darkened = hsl.withLightness((hsl.lightness * lightnessFactor).clamp(0.0, 1.0));
+  
+  // Chuyển đổi lại sang RGB
+  return darkened.toColor();
+}

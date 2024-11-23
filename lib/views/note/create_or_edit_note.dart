@@ -156,7 +156,7 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
               filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
               child: Container(
                 // height: 100,
-                color: theme.canvasColor.withOpacity(0.3),
+                color: theme.primaryColor,
                 child: SafeArea(
                   child: Row(
                     children: [
@@ -165,7 +165,7 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
                         onPressed: () {
                           Navigator.pop(context);
                         }, 
-                        icon: Icon(Icons.arrow_back),
+                        icon: Icon(Icons.arrow_back, color: theme.colorScheme.onPrimary,),
                       ),
                       Spacer(),
 
@@ -174,7 +174,7 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
                         onPressed: () {
                           // handle hide
                         }, 
-                        icon: FaIcon(note.isPrivate ? FontAwesomeIcons.eyeSlash : FontAwesomeIcons.eye),
+                        icon: FaIcon(note.isPrivate ? FontAwesomeIcons.eyeSlash : FontAwesomeIcons.eye, color: theme.colorScheme.onPrimary,),
                       ),
 
                       // add tag button
@@ -184,13 +184,13 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
                             _showTagList = true;
                           });
                         }, 
-                        icon: FaIcon(FontAwesomeIcons.tag),
+                        icon: FaIcon(FontAwesomeIcons.tag, color: theme.colorScheme.onPrimary,),
                       ),
 
                       // delete button
                       IconButton(
                         onPressed: _handleDelete, 
-                        icon: FaIcon(FontAwesomeIcons.trashCan),
+                        icon: FaIcon(FontAwesomeIcons.trashCan, color: theme.colorScheme.onPrimary,),
                       ),
 
                       // Save button

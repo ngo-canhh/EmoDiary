@@ -124,7 +124,7 @@ class _ForgotPwScreenState extends State<ForgotPwScreen> {
                               setState(() {
                                 _isLoading = true;
                               });
-                              await userState.sendResetPwRequest(context: context, emailController: emailController);
+                              await userState.sendResetPwRequest(context: context, email: emailController.text);
                               setState(() {
                                 _isLoading = false;
                               });

@@ -3,8 +3,8 @@ import 'package:emodiary/firebase_options.dart';
 import 'package:emodiary/views/auth/forgot_pw_screen.dart';
 import 'package:emodiary/views/auth/login_screen.dart';
 import 'package:emodiary/views/home/main_wrapper.dart';
-import 'package:emodiary/views/home/me_page.dart';
-import 'package:emodiary/views/home/calendar_page.dart';
+import 'package:emodiary/views/me/me_page.dart';
+import 'package:emodiary/views/note/calendar_page.dart';
 import 'package:emodiary/views/auth/signup_screen.dart';
 import 'package:emodiary/views/splash/splash_screen.dart';
 import 'package:emodiary/views/home/today_page.dart';
@@ -69,34 +69,30 @@ final GoRouter _router = GoRouter(
               builder: (context, state) => MePage(),
             )
           ]),
-        ])
+        ]) 
   ],
 );
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({super.key});
 
-  @override
-  State<App> createState() => _AppState();
-}
-
-class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     UserState userState = Provider.of<UserState>(context);
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: userState),
+        // ChangeNotifierProvider.value(value: userState),
         if (userState.loggedIn)
           ChangeNotifierProvider.value(value: userState.dbProvider),
       ],
       child: MaterialApp.router(
         title: 'EmoDiary',
+        themeMode: userState.themeMode,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             dynamicSchemeVariant: DynamicSchemeVariant.content,
-            seedColor: Color(0xffcfe1b9),
+            seedColor: userState.color,
             brightness: Brightness.light,
           ),
           useMaterial3: true,
@@ -104,7 +100,7 @@ class _AppState extends State<App> {
         darkTheme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             dynamicSchemeVariant: DynamicSchemeVariant.content,
-            seedColor: Color(0xff728156),
+            seedColor: Color(0xff374A41),
             brightness: Brightness.dark,
           ),
           useMaterial3: true,

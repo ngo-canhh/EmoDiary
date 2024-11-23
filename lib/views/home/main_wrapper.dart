@@ -37,13 +37,13 @@ class _MainWrapperState extends State<MainWrapper> {
           });
           _goBranch(_selectedIndex);
         },
-        buttonBackgroundColor: theme.colorScheme.primaryContainer,
-        color: theme.colorScheme.primaryContainer,
+        buttonBackgroundColor: theme.colorScheme.secondary,
+        color: theme.colorScheme.secondary,
         backgroundColor: theme.scaffoldBackgroundColor,
         items: [
-            FaIcon(FontAwesomeIcons.faceSmileWink, color: theme.colorScheme.onPrimaryContainer,),
-            FaIcon(FontAwesomeIcons.calendarDays, color: theme.colorScheme.onPrimaryContainer,),
-            FaIcon(FontAwesomeIcons.user, color: theme.colorScheme.onPrimaryContainer,),
+            FaIcon(FontAwesomeIcons.faceSmileWink, color: theme.colorScheme.onSecondary,),
+            FaIcon(FontAwesomeIcons.calendarDays, color: theme.colorScheme.onSecondary,),
+            FaIcon(FontAwesomeIcons.user, color: theme.colorScheme.onSecondary,),
         ],
         animationCurve: Curves.fastLinearToSlowEaseIn,
       )

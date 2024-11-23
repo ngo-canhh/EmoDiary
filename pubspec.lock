@@ -145,6 +145,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.7.0"
+  easy_radio:
+    dependency: "direct main"
+    description:
+      name: easy_radio
+      sha256: "6f8a2b947ee581e3c4750a5b3ada6af423e88174fe15e03d74d1a912ef911435"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   email_validator:
     dependency: transitive
     description:
@@ -286,6 +294,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  flutter_colorpicker:
+    dependency: "direct main"
+    description:
+      name: flutter_colorpicker
+      sha256: "969de5f6f9e2a570ac660fb7b501551451ea2a1ab9e2097e89475f60e07816ea"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -542,7 +558,7 @@ packages:
     source: hosted
     version: "6.1.2"
   shared_preferences:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: shared_preferences
       sha256: "95f9997ca1fb9799d494d0cb2a780fd7be075818d59f00c43832ed112b158a82"
@@ -618,6 +634,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  splash:
+    dependency: "direct main"
+    description:
+      name: splash
+      sha256: b0e03a50b923fb8978710e2201978f9ed3aea7c47a535e55e1458a342fe35af6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   sqflite:
     dependency: "direct main"
     description:

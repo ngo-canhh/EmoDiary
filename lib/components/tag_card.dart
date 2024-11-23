@@ -23,7 +23,7 @@ class TagCard extends StatelessWidget {
       },
       child: Card(
         elevation: 2,
-        color: Color(tag.color == null ? Colors.grey.value : tag.color!),
+        color: Color(tag.color ?? Colors.grey.value),
         child: Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text('# ${tag.name}'),

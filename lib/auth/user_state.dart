@@ -4,6 +4,7 @@ import 'package:emodiary/helper/helper_function.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserState extends ChangeNotifier {
   UserState._() {
@@ -28,18 +29,56 @@ class UserState extends ChangeNotifier {
     if (userState.loggedIn) {
       userState._dbProvider = await DbProvider.create(user: userState.user!);
     }
+    userState._prefs = await SharedPreferences.getInstance();
+    userState.setThemeMode(userState._prefs.getString('themeMode'));
+    userState.setLightModeColor(Color(userState._prefs.getInt('colorValue') ?? 0xffcfe1b9));;
     return userState;
   }
 
   User? _user;
   DbProvider? _dbProvider;
   static final auth = FirebaseAuth.instance;
+  late ThemeMode _themeMode;
+  late String _themeModeStr;
+  late Color _color;
+  late SharedPreferences _prefs;
 
-
+  Color get color => _color;
+  String get themeModeStr => _themeModeStr;
+  ThemeMode get themeMode => _themeMode;
   DbProvider? get dbProvider => _dbProvider;
   bool get loggedIn => _user != null;
   User? get user => _user;
 
+  Future<void> setLightModeColor(Color value) async {
+    _color = value;
+    notifyListeners();
+    await _prefs.setInt('colorValue', value.value);
+  }
+
+
+  Future<void> setThemeMode(String? theme) async {
+    switch (theme) {
+      case 'system':
+      case null:
+      _themeMode = ThemeMode.system;
+      break;
+
+      case 'light':
+      _themeMode = ThemeMode.light;
+      break;
+
+      case 'dark':
+      _themeMode = ThemeMode.dark;
+      break;
+
+      default:
+      throw Exception('Input error');
+    }
+    _themeModeStr = theme ?? 'system';
+    await _prefs.setString('themeMode', theme ?? 'system');
+    notifyListeners();
+  }
 
   
 
@@ -109,10 +148,10 @@ class UserState extends ChangeNotifier {
 
   // reset password
   Future<void> sendResetPwRequest({required BuildContext context, 
-                      required TextEditingController emailController}) async {
+                      required String email}) async {
     AuthStatus? status;
     await auth
-        .sendPasswordResetEmail(email: emailController.text)
+        .sendPasswordResetEmail(email: email)
         .then((value) => status = AuthStatus.successful)
         .catchError(
           (e) => status = AuthExceptionHandler.handleAuthException(e));
@@ -121,6 +160,31 @@ class UserState extends ChangeNotifier {
     } else {
       await displayMessageToUser(AuthExceptionHandler.generateErrorMessage(status), context);
     }
+  }
+
+  Future<void> setUserName(String username) async {
+    await _user!.updateDisplayName(username);
+    await _user!.reload();
+    _user = auth.currentUser!;
+    notifyListeners();
+  }
+
+  Future<bool> changePassword(BuildContext context, String newPassword) async {
+    AuthStatus? status;
+    await _user!
+      .updatePassword(newPassword)
+      .then((_) => status = AuthStatus.successful)
+      .catchError(
+        (e) => status = AuthExceptionHandler.handleAuthException(e)
+      );
+
+    if (status == AuthStatus.successful) {
+      await displayMessageToUser("Successful!", context);
+      await _user!.reload();
+    } else {
+      await displayMessageToUser(AuthExceptionHandler.generateErrorMessage(status), context);
+    }
+    return status == AuthStatus.successful;
   }
 
   // Future<void> confirmOTP({required BuildContext context, 
