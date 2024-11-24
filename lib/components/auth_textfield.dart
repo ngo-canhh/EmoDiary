@@ -24,7 +24,7 @@ class AuthTextfield extends StatelessWidget {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: theme.colorScheme.primaryContainer,
+            color: theme.colorScheme.primary.withOpacity(0.3),
           ),
         ),
         focusedBorder: OutlineInputBorder(

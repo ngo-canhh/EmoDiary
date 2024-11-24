@@ -27,7 +27,6 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
   late bool isNoteNew;
 
   bool isDirty = false;
-  bool _showTagList = false;
   DbProvider? dbProvider;
   FocusNode titleFocus = FocusNode();
   FocusNode bodyFocus = FocusNode();

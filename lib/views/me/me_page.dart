@@ -1,10 +1,7 @@
 import 'package:easy_radio/easy_radio.dart';
 import 'package:emodiary/auth/user_state.dart';
-import 'package:emodiary/components/auth_textfield.dart';
 import 'package:emodiary/components/stateful_textfield.dart';
-import 'package:emodiary/components/tag_manager.dart';
-import 'package:emodiary/database/db_provider.dart';
-import 'package:emodiary/database/entity.dart';
+import 'package:emodiary/views/me/tag_manager.dart';
 import 'package:emodiary/helper/helper_function.dart';
 import 'package:emodiary/views/me/me_tile.dart';
 import 'package:emodiary/views/me/profile_card.dart';
@@ -24,7 +21,6 @@ class _MePageState extends State<MePage> {
   @override
   Widget build(BuildContext context) {
     UserState userState = Provider.of<UserState>(context);
-    DbProvider dbProvider = Provider.of<DbProvider>(context);
 
     return Scaffold(
       appBar: AppBar(

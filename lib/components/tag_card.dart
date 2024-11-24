@@ -42,11 +42,11 @@ class TagCard extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FaIcon(FontAwesomeIcons.hashtag, color: contentColor, size: 16),
-            const SizedBox(width: 4),
+            FaIcon(FontAwesomeIcons.hashtag, color: contentColor, size: 14),
+            const SizedBox(width: 2),
             Flexible(
               child: Text(
-                tag.name,
+                '${tag.name}, ${tag.scored}',
                 style: TextStyle(
                   color: contentColor,
                   fontWeight: FontWeight.w500,

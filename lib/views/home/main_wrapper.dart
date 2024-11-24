@@ -37,7 +37,7 @@ class _MainWrapperState extends State<MainWrapper> {
           });
           _goBranch(_selectedIndex);
         },
-        buttonBackgroundColor: theme.colorScheme.secondary,
+        // buttonBackgroundColor: theme.colorScheme.secondary,
         color: theme.colorScheme.secondary,
         backgroundColor: theme.scaffoldBackgroundColor,
         items: [
