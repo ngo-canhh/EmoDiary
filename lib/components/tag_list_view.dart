@@ -1,4 +1,5 @@
 import 'package:emodiary/components/auth_textfield.dart';
+import 'package:emodiary/components/handle_create_tag.dart';
 import 'package:emodiary/components/tag_card.dart';
 import 'package:emodiary/database/db_provider.dart';
 import 'package:emodiary/database/entity.dart';
@@ -115,20 +116,22 @@ class _TagListViewState extends State<TagListView> {
                           ),
                         GestureDetector(
                           onTap: () {
-                            _handleCreateTag(onSubmit: (color, scored) async {
-                              if (nameCtl.text == '') {
-                                displayMessageToUser(
-                                        'Please add tag name', context)
-                                    .then((_) {
-                                  return;
+                            handleCreateTag(
+                                context: context,
+                                tagNameController: nameCtl,
+                                onSubmit: (newTag) async {
+                                  if (newTag.name == '') {
+                                    displayMessageToUser(
+                                            'Please add tag name', context)
+                                        .then((_) {
+                                      return;
+                                    });
+                                  } else {
+                                    await dbProvider.dbService
+                                        .createTag(newTag);
+                                    setState(() {});
+                                  }
                                 });
-                              }
-                              await dbProvider.dbService.createTag(Tag(
-                                  name: nameCtl.text,
-                                  color: color.value,
-                                  scored: scored));
-                              setState(() {});
-                            });
                           },
                           child: Container(
                             height: 40,
@@ -213,7 +216,7 @@ class _TagListViewState extends State<TagListView> {
                         ],
                       ),
                     ),
-                    SizedBox(width: 5,child: VerticalDivider()),
+                    SizedBox(width: 5, child: VerticalDivider()),
                     Expanded(
                         flex: 2,
                         child: Column(
@@ -266,7 +269,9 @@ class _TagListViewState extends State<TagListView> {
           ],
         );
       },
-    ).then((_) {nameCtl.clear();});
+    ).then((_) {
+      nameCtl.clear();
+    });
   }
 
   @override

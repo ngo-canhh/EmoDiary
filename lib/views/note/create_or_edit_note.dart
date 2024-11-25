@@ -4,8 +4,10 @@ import 'package:emodiary/components/tag_card.dart';
 import 'package:emodiary/components/tag_list_view.dart';
 import 'package:emodiary/database/db_provider.dart';
 import 'package:emodiary/database/entity.dart';
+import 'package:emodiary/views/note/image_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,6 +27,8 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
   late Note note;
   late Set<Tag> tags;
   late bool isNoteNew;
+  late Set<String> preImages;
+  late Set<String> toShowImages;
 
   bool isDirty = false;
   DbProvider? dbProvider;
@@ -51,6 +55,9 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
       tags = widget.existTags!.toSet();
       isNoteNew = false;
     }
+    preImages = note.mediaUrls == null ? {} : note.mediaUrls!.trim().split(' ').toSet();
+    toShowImages = {};
+    toShowImages.addAll(preImages);
     titleController.text = note.title!;
     bodyController.text = note.body!;
   }
@@ -59,6 +66,7 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     dbProvider ??= Provider.of<DbProvider>(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -67,31 +75,49 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
               SizedBox(
                 height: 50,
               ),
+
               // tag box
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      for (Tag tag in tags)
-                        Container(
-                          padding: const EdgeInsets.only(left: 5, right: 5),
-                          child: TagCard(
-                            tag: tag,
-                            onDoubleTap: (tag) {
-                              setState(() {
-                                isDirty = true;
-                                tags.remove(tag);
-                              });
-                            },
+              if (tags.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        for (Tag tag in tags)
+                          Container(
+                            padding: const EdgeInsets.only(left: 5, right: 5),
+                            child: TagCard(
+                              tag: tag,
+                              onDoubleTap: (tag) {
+                                setState(() {
+                                  isDirty = true;
+                                  tags.remove(tag);
+                                });
+                              },
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Divider(),
+
+              if (toShowImages.isNotEmpty)
+                Column(
+                  children: [
+                    ImageListView(
+                      imagePaths: toShowImages.toList(),
+                      maxHeight: 150,
+                      onDoubleTap: (imagePath) {
+                        setState(() {
+                          toShowImages.remove(imagePath);
+                          isDirty = true;
+                        });
+                      },
+                    ),
+                    Divider(),
+                  ],
+                ),
 
               // Title textfield
               Padding(
@@ -163,10 +189,10 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
           // Tools
           ClipRect(
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+              filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
               child: Container(
                 // height: 100,
-                color: theme.colorScheme.secondaryContainer,
+                // color: theme.colorScheme.secondaryContainer,
                 child: SafeArea(
                     child: Row(
                   children: [
@@ -185,13 +211,17 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
                     // hide button
                     IconButton(
                       onPressed: () {
-                        // handle hide
+                        setState(() {
+                          note.isPrivate = !note.isPrivate;
+                          isDirty = true;
+                        });
                       },
                       icon: FaIcon(
                         note.isPrivate
                             ? FontAwesomeIcons.eyeSlash
                             : FontAwesomeIcons.eye,
                         color: theme.colorScheme.onSecondaryContainer,
+                        size: 18,
                       ),
                     ),
 
@@ -208,8 +238,40 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
                       icon: FaIcon(
                         FontAwesomeIcons.tag,
                         color: theme.colorScheme.onSecondaryContainer,
+                        size: 18,
                       ),
                     ),
+
+                    // add photo button
+                    PopupMenuButton<bool>(
+                      icon: FaIcon(
+                        FontAwesomeIcons.photoFilm,
+                        color: theme.colorScheme.onSecondaryContainer,
+                        size: 18,
+                      ),
+                      onSelected: (value) {
+                        _handleAddPhoto(value);
+                      },
+                      itemBuilder:(context) => <PopupMenuEntry<bool>>[
+                        PopupMenuItem<bool>(
+                          value: true,
+                          child: Text('Camera')),
+                        PopupMenuItem<bool>(
+                          value: false,
+                          child: Text('Gallery')),
+                      ],
+                    ),
+
+                    // IconButton(
+                    //   onPressed: () {
+                    //     _handleAddPhoto();
+                    //   },
+                    //   icon: FaIcon(
+                    //     FontAwesomeIcons.photoFilm,
+                    //     color: theme.colorScheme.onSecondaryContainer,
+                    //     size: 18,
+                    //   ),
+                    // ),
 
                     // delete button
                     IconButton(
@@ -217,40 +279,28 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
                       icon: FaIcon(
                         FontAwesomeIcons.trashCan,
                         color: theme.colorScheme.onSecondaryContainer,
+                        size: 18,
                       ),
                     ),
 
                     // Save button
                     if (isDirty)
-                      AnimatedContainer(
-                        duration: Duration(milliseconds: 500),
-                        margin: EdgeInsets.only(left: 10),
-                        width: 110,
-                        height: 45,
-                        curve: Curves.decelerate,
-                        child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    theme.colorScheme.primaryContainer,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                  topLeft: const Radius.circular(100),
-                                  bottomLeft: const Radius.circular(100),
-                                ))),
-                            onPressed: _handleSaveNote,
-                            icon: FittedBox(
-                              child: Icon(
-                                Icons.done,
-                                color: theme.colorScheme.onPrimaryContainer,
-                              ),
-                            ),
-                            label: Text(
-                              'SAVE',
-                              style: TextStyle(
-                                  letterSpacing: 0,
-                                  color: theme.colorScheme.onPrimaryContainer),
-                            )),
-                      ),
+                      GestureDetector(
+                        onTap: _handleSaveNote,
+                        child: AnimatedContainer(
+                          duration: Duration(seconds: 1),
+                          margin: EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.onSecondaryContainer,
+                            borderRadius: BorderRadius.only(
+                                    topLeft: const Radius.circular(100),
+                                    bottomLeft: const Radius.circular(100),
+                          ),),
+                          width: 50,
+                          height: 40,
+                          curve: Curves.decelerate,
+                          child: Icon(Icons.check, color: theme.colorScheme.secondaryContainer,))
+                        ),
                   ],
                 )),
               ),
@@ -259,6 +309,29 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
         ],
       ),
     );
+  }
+
+  void _handleAddPhoto(bool isPickFromCamera) async {
+    final ImagePicker picker = ImagePicker();
+
+    if (isPickFromCamera) {
+      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        setState(() {
+          toShowImages.add(image.path);
+          isDirty = true;
+        });
+      } 
+    } else {
+      final List<XFile> images = await picker.pickMultiImage();
+      if (images.isNotEmpty) {
+        setState(() {
+          toShowImages.addAll(images.map((e) => e.path));
+          isDirty = true;
+        });
+      }
+    }
+
   }
 
   void _handleDeleteNote() async {
@@ -310,9 +383,15 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
   }
 
   void _handleSaveNote() async {
+    Set<String> toDels = preImages.difference(toShowImages);
+    Set<String> toSaves = toShowImages.difference(preImages);
+    await dbProvider?.delImages(toDels);
+    Set<String>? saved = await dbProvider?.saveImages(toSaves);
+    saved?.addAll(preImages.intersection(toShowImages));
     setState(() {
       note.title = titleController.text;
       note.body = bodyController.text;
+      note.mediaUrls = saved?.join(' ');
     });
     if (isNoteNew) {
       dbProvider!.createNote(note: note, tags: tags.toList());
@@ -321,6 +400,10 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
     }
     setState(() {
       isDirty = isNoteNew = false;
+      preImages.clear();
+      toShowImages.clear();
+      preImages.addAll(saved!);
+      toShowImages.addAll(preImages);
     });
 
     titleFocus.unfocus();
@@ -332,7 +415,8 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
       context: context,
       builder: (context) {
         return ConstrainedBox(
-          constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.6),
           child: AlertDialog(
             title: Text('Tags'),
             content: TagListView(
@@ -360,3 +444,5 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
     super.dispose();
   }
 }
+
+

@@ -87,7 +87,8 @@ class _CalendarPageState extends State<CalendarPage> {
       ),
       floatingActionButton: (selectedDates.first.isBefore(DateTime.now()))
           ? FloatingActionButton(
-              child: FaIcon(FontAwesomeIcons.notesMedical),
+              backgroundColor: theme.colorScheme.secondary,
+              child: FaIcon(FontAwesomeIcons.notesMedical, color: theme.colorScheme.onSecondary,),
               onPressed: () {
                 Navigator.push(
                     context,

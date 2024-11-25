@@ -1,6 +1,7 @@
 import 'package:easy_radio/easy_radio.dart';
 import 'package:emodiary/auth/user_state.dart';
 import 'package:emodiary/components/stateful_textfield.dart';
+import 'package:emodiary/database/db_provider.dart';
 import 'package:emodiary/views/me/tag_manager.dart';
 import 'package:emodiary/helper/helper_function.dart';
 import 'package:emodiary/views/me/me_tile.dart';
@@ -174,7 +175,10 @@ class _MePageState extends State<MePage> {
                     ],
                   ),
                 ),
-              ]))
+              ])),
+          ElevatedButton(onPressed: () async {
+            await Provider.of<DbProvider>(context, listen: false).deleteUserData();
+          }, child: Text('Delete all data')),
         ],
       ),
     );
