@@ -1,4 +1,4 @@
-import 'package:emodiary/auth/user_state.dart';
+import 'package:emodiary/provider/user_state.dart';
 import 'package:emodiary/firebase_options.dart';
 import 'package:emodiary/views/auth/forgot_pw_screen.dart';
 import 'package:emodiary/views/auth/login_screen.dart';
@@ -85,6 +85,8 @@ class App extends StatelessWidget {
         ChangeNotifierProvider.value(value: userState),
         if (userState.loggedIn)
           ChangeNotifierProvider.value(value: userState.dbProvider),
+        // if (userState.loggedIn)
+        //   ChangeNotifierProvider.value(value: userState.musicProvider,)
       ],
       child: MaterialApp.router(
         title: 'EmoDiary',

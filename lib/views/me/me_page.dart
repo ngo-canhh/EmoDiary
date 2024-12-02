@@ -1,7 +1,7 @@
 import 'package:easy_radio/easy_radio.dart';
-import 'package:emodiary/auth/user_state.dart';
+import 'package:emodiary/provider/user_state.dart';
 import 'package:emodiary/components/stateful_textfield.dart';
-import 'package:emodiary/database/db_provider.dart';
+import 'package:emodiary/provider/db_provider.dart';
 import 'package:emodiary/views/me/tag_manager.dart';
 import 'package:emodiary/helper/helper_function.dart';
 import 'package:emodiary/views/me/me_tile.dart';
@@ -34,8 +34,8 @@ class _MePageState extends State<MePage> {
       body: ListView(
         children: [
           ProfileCard(
-              avatarUrl:
-                  'https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/464620109_1875738602919243_3128987228413772702_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFiVDmKjlWz6JjJNA9Tfcg0x4Hm8h4V1HLHgebyHhXUcrAE8ZOFA8cJN8x6wCdYJZQ3IiTzcdQChP05aYMu5_ZV&_nc_ohc=TuHwdGhdpmwQ7kNvgGBrI3h&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&_nc_gid=AYm0upTy_sZXCHyx73b3pfX&oh=00_AYCawiuqlzfibtNZKpAZNIIKRUKHll4OA6uER0bIuHJTyw&oe=67449F54',
+              // avatarUrl:
+              //     'https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/464620109_1875738602919243_3128987228413772702_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFiVDmKjlWz6JjJNA9Tfcg0x4Hm8h4V1HLHgebyHhXUcrAE8ZOFA8cJN8x6wCdYJZQ3IiTzcdQChP05aYMu5_ZV&_nc_ohc=TuHwdGhdpmwQ7kNvgGBrI3h&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&_nc_gid=AYm0upTy_sZXCHyx73b3pfX&oh=00_AYCawiuqlzfibtNZKpAZNIIKRUKHll4OA6uER0bIuHJTyw&oe=67449F54',
               name: userState.user!.displayName!,
               email: userState.user!.email!),
           SizedBox(

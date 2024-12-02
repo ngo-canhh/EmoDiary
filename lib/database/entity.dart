@@ -37,7 +37,8 @@ class Tag {
   int get hashCode => id.hashCode;
 
   @override
-  String toString() => 'Tag(id: $id, name: $name, color: $color, scored: $scored)';
+  String toString() =>
+      'Tag(id: $id, name: $name, color: $color, scored: $scored)';
 }
 
 class Note {
@@ -67,7 +68,7 @@ class Note {
         'mood_level': moodLevel,
         'is_private': isPrivate ? 1 : 0,
       };
-  
+
   factory Note.fromMap(Map<String, Object?> map) {
     return Note(
       id: map['note_id'] as int?,
@@ -91,7 +92,8 @@ class Note {
   int get hashCode => id.hashCode;
 
   @override
-  String toString() => 'Note(id: $id, title: $title, body: $body, mediaUrls: $mediaUrls, createdAt: $createdAt, moodLevel: $moodLevel, isPrivate: $isPrivate)';
+  String toString() =>
+      'Note(id: $id, title: $title, body: $body, mediaUrls: $mediaUrls, createdAt: $createdAt, moodLevel: $moodLevel, isPrivate: $isPrivate)';
 }
 
 class Memory {
@@ -145,7 +147,8 @@ class Memory {
   int get hashCode => id.hashCode;
 
   @override
-  String toString() => 'Memory(id: $id, name: $name, date: $date, time: $time, description: $description, createdAt: $createdAt, noteId: $noteId)';
+  String toString() =>
+      'Memory(id: $id, name: $name, date: $date, time: $time, description: $description, createdAt: $createdAt, noteId: $noteId)';
 }
 
 class Notification {
@@ -191,7 +194,8 @@ class Notification {
   int get hashCode => id.hashCode;
 
   @override
-  String toString() => 'Notification(id: $id, date: $date, time: $time, location: $location, memoryId: $memoryId)';
+  String toString() =>
+      'Notification(id: $id, date: $date, time: $time, location: $location, memoryId: $memoryId)';
 }
 
 class NoteTag {
@@ -217,4 +221,34 @@ class NoteTag {
 
   @override
   String toString() => 'NoteTag(noteId: $noteId, tagId: $tagId)';
+}
+
+class Track {
+  Track(
+      {required this.id,
+      required this.artist,
+      required this.streamUrl,
+      required this.thumbnailHeight,
+      required this.thumbnailUrl,
+      required this.thumbnailWidth,
+      required this.title});
+
+  String id;
+  String streamUrl;
+  String title;
+  String thumbnailUrl;
+  double thumbnailHeight;
+  double thumbnailWidth;
+  String artist;
+
+  factory Track.fromMap(Map<String, dynamic> track) {
+    return Track(
+        id: track["id"]! as String,
+        artist: track["artist"]! as String,
+        streamUrl: track["streamUrl"]! as String,
+        thumbnailHeight: (track["thumbnailHeight"] ?? 480).toDouble(),
+        thumbnailUrl: track["thumbnailUrl"]! as String,
+        thumbnailWidth: (track["thumbnailWidth"] ?? 360).toDouble(),
+        title: track["title"]! as String);
+  }
 }

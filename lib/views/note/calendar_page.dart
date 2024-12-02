@@ -1,8 +1,8 @@
-import 'package:emodiary/components/note_card.dart';
-import 'package:emodiary/database/db_provider.dart';
+import 'package:emodiary/views/note/note_card.dart';
+import 'package:emodiary/provider/db_provider.dart';
 import 'package:emodiary/database/entity.dart';
 import 'package:emodiary/helper/helper_function.dart';
-import 'package:emodiary/components/my_calendar.dart';
+import 'package:emodiary/views/note/my_calendar.dart';
 import 'package:emodiary/views/note/create_or_edit_note.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

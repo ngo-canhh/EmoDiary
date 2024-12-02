@@ -1,6 +1,6 @@
 import 'package:emodiary/components/handle_create_tag.dart';
 import 'package:emodiary/components/tag_card.dart';
-import 'package:emodiary/database/db_provider.dart';
+import 'package:emodiary/provider/db_provider.dart';
 import 'package:emodiary/helper/helper_function.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

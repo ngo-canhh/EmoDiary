@@ -12,6 +12,7 @@ class ImageListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(imagePaths.length);
     final margin = EdgeInsets.only(left: runSpacing ?? 5);
     return SizedBox(
       height: maxHeight,

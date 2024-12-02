@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:emodiary/components/tag_card.dart';
 import 'package:emodiary/components/tag_list_view.dart';
-import 'package:emodiary/database/db_provider.dart';
+import 'package:emodiary/provider/db_provider.dart';
 import 'package:emodiary/database/entity.dart';
 import 'package:emodiary/views/note/image_list_view.dart';
 import 'package:flutter/material.dart';
@@ -13,11 +13,12 @@ import 'package:go_router/go_router.dart';
 
 class CreateOrEditNote extends StatefulWidget {
   const CreateOrEditNote(
-      {super.key, this.existNote, this.existTags, this.selectDate});
+      {super.key, this.existNote, this.existTags, this.selectDate, this.title});
 
   final Note? existNote;
   final List<Tag>? existTags;
   final DateTime? selectDate;
+  final String? title;
 
   @override
   State<CreateOrEditNote> createState() => _CreateOrEditNoteState();
@@ -42,13 +43,14 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
     super.initState();
     if (widget.existNote == null) {
       note = Note(
-          title: '',
+          title: widget.title ?? '',
           body: '',
           createdAt: widget.selectDate == null
               ? DateTime.now().toIso8601String()
               : widget.selectDate!.toIso8601String(),
           isPrivate: false);
       tags = <Tag>{};
+      isDirty = widget.title != null;
       isNoteNew = true;
     } else {
       note = widget.existNote!;
@@ -73,7 +75,7 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
           ListView(
             children: [
               SizedBox(
-                height: 50,
+                height: 55,
               ),
 
               // tag box
@@ -191,8 +193,8 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
               child: Container(
-                // height: 100,
-                // color: theme.colorScheme.secondaryContainer,
+                height: 100,
+                color: theme.colorScheme.secondaryContainer,
                 child: SafeArea(
                     child: Row(
                   children: [
@@ -385,13 +387,22 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
   void _handleSaveNote() async {
     Set<String> toDels = preImages.difference(toShowImages);
     Set<String> toSaves = toShowImages.difference(preImages);
-    await dbProvider?.delImages(toDels);
-    Set<String>? saved = await dbProvider?.saveImages(toSaves);
-    saved?.addAll(preImages.intersection(toShowImages));
+
+    if (toDels.isNotEmpty) {
+      await dbProvider?.delImages(toDels);
+    }
+
+    Set<String> saved = {};
+    if (toSaves.isNotEmpty) {
+      final temp = await dbProvider?.saveImages(toSaves);
+      saved.addAll(temp!);
+    }
+    saved.addAll(preImages.intersection(toShowImages));
+
     setState(() {
       note.title = titleController.text;
       note.body = bodyController.text;
-      note.mediaUrls = saved?.join(' ');
+      note.mediaUrls = saved.isNotEmpty ? saved.join(' ') : null;
     });
     if (isNoteNew) {
       dbProvider!.createNote(note: note, tags: tags.toList());
@@ -402,8 +413,9 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
       isDirty = isNoteNew = false;
       preImages.clear();
       toShowImages.clear();
-      preImages.addAll(saved!);
-      toShowImages.addAll(preImages);
+      preImages.addAll(saved);
+      toShowImages.addAll(saved);
+  
     });
 
     titleFocus.unfocus();

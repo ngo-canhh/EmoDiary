@@ -1,7 +1,7 @@
 import 'package:emodiary/components/auth_textfield.dart';
 import 'package:emodiary/components/handle_create_tag.dart';
 import 'package:emodiary/components/tag_card.dart';
-import 'package:emodiary/database/db_provider.dart';
+import 'package:emodiary/provider/db_provider.dart';
 import 'package:emodiary/database/entity.dart';
 import 'package:emodiary/helper/helper_function.dart';
 import 'package:flutter/material.dart';

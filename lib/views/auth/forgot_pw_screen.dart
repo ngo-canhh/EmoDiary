@@ -1,5 +1,5 @@
 import 'package:emodiary/components/auth_textfield.dart';
-import 'package:emodiary/auth/user_state.dart';
+import 'package:emodiary/provider/user_state.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';

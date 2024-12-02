@@ -39,7 +39,7 @@ class _MainWrapperState extends State<MainWrapper> {
         },
         // buttonBackgroundColor: theme.colorScheme.secondary,
         color: theme.colorScheme.secondary,
-        backgroundColor: theme.scaffoldBackgroundColor,
+        backgroundColor: theme.scaffoldBackgroundColor.withOpacity(0),
         items: [
             FaIcon(FontAwesomeIcons.faceSmileWink, color: theme.colorScheme.onSecondary,),
             FaIcon(FontAwesomeIcons.calendarDays, color: theme.colorScheme.onSecondary,),

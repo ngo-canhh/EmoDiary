@@ -8,6 +8,11 @@
 	<string>Ứng dụng cần lưu ảnh vào thư viện.</string>
 	<key>NSDocumentsFolderUsageDescription</key>
 	<string>Your app needs access to the documents directory</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 
 	
 	<key>CFBundleDevelopmentRegion</key>
