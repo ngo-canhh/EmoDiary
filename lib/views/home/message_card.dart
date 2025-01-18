@@ -1,4 +1,3 @@
-import 'package:emodiary/components/auth_textfield.dart';
 import 'package:emodiary/provider/user_state.dart';
 import 'package:emodiary/views/note/create_or_edit_note.dart';
 import 'package:flutter/material.dart';

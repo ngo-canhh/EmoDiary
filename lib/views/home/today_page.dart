@@ -7,7 +7,6 @@ import 'package:emodiary/database/entity.dart';
 import 'package:emodiary/views/home/music_card.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:page_flip_builder/page_flip_builder.dart';
 
 class TodayPage extends StatefulWidget {
   const TodayPage({super.key});
@@ -55,10 +54,8 @@ class _TodayPageState extends State<TodayPage> {
           },
           onDone: () {
             _streamController.close();
-            print('success');
           },
           onError: (e) {
-            print("$e");
             _showError("Error reading stream data");
             _streamController.addError(e); // Thông báo lỗi vào stream
           },
