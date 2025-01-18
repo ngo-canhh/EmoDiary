@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:emodiary/provider/user_state.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -30,7 +32,7 @@ class ProfileCard extends StatelessWidget {
             // Avatar
             CircleAvatar(
               radius: 35,
-              backgroundImage: avatarUrl != null ? NetworkImage(avatarUrl!) : AssetImage('lib/assets/images/avatar_none.jpg'),
+              backgroundImage: avatarUrl != null ? FileImage(File(avatarUrl!)) : AssetImage('lib/assets/images/avatar_none.jpg') as ImageProvider,
               backgroundColor: Colors.grey[200],
             ),
             const SizedBox(width: 16.0),

@@ -122,10 +122,10 @@ class _TagListViewState extends State<TagListView> {
                                 onSubmit: (newTag) async {
                                   if (newTag.name == '') {
                                     displayMessageToUser(
-                                            'Please add tag name', context)
-                                        .then((_) {
-                                      return;
-                                    });
+                                            'Please add tag name', context);
+                            
+                                    return;
+                                    
                                   } else {
                                     await dbProvider.dbService
                                         .createTag(newTag);

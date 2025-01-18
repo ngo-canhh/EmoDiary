@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:emodiary/components/tag_card.dart';
 import 'package:emodiary/components/tag_list_view.dart';
+import 'package:emodiary/helper/helper_function.dart';
 import 'package:emodiary/provider/db_provider.dart';
 import 'package:emodiary/database/entity.dart';
 import 'package:emodiary/views/note/image_list_view.dart';
@@ -264,17 +265,6 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
                       ],
                     ),
 
-                    // IconButton(
-                    //   onPressed: () {
-                    //     _handleAddPhoto();
-                    //   },
-                    //   icon: FaIcon(
-                    //     FontAwesomeIcons.photoFilm,
-                    //     color: theme.colorScheme.onSecondaryContainer,
-                    //     size: 18,
-                    //   ),
-                    // ),
-
                     // delete button
                     IconButton(
                       onPressed: _handleDeleteNote,
@@ -317,6 +307,10 @@ class _CreateOrEditNoteState extends State<CreateOrEditNote> {
     final ImagePicker picker = ImagePicker();
 
     if (isPickFromCamera) {
+      if (await dbProvider!.isSimulator()) {
+        displayMessageToUser("Camera does not support in simulation", context);
+        return;
+      }
       final XFile? image = await picker.pickImage(source: ImageSource.camera);
       if (image != null) {
         setState(() {

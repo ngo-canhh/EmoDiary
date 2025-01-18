@@ -175,6 +175,14 @@ class UserState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> setAvatar(String avatarUrl) async {
+    Set<String> saved = await dbProvider!.saveImages({avatarUrl});
+    await _user!.updatePhotoURL(saved.first);
+    await _user!.reload();
+    _user = auth.currentUser!;
+    notifyListeners();
+  }
+
   Future<bool> changePassword(BuildContext context, String newPassword) async {
     AuthStatus? status;
     await _user!

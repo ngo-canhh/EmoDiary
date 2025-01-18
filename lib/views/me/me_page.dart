@@ -9,6 +9,7 @@ import 'package:emodiary/views/me/profile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class MePage extends StatefulWidget {
@@ -34,8 +35,7 @@ class _MePageState extends State<MePage> {
       body: ListView(
         children: [
           ProfileCard(
-              // avatarUrl:
-              //     'https://scontent.fhan14-3.fna.fbcdn.net/v/t39.30808-6/464620109_1875738602919243_3128987228413772702_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFiVDmKjlWz6JjJNA9Tfcg0x4Hm8h4V1HLHgebyHhXUcrAE8ZOFA8cJN8x6wCdYJZQ3IiTzcdQChP05aYMu5_ZV&_nc_ohc=TuHwdGhdpmwQ7kNvgGBrI3h&_nc_zt=23&_nc_ht=scontent.fhan14-3.fna&_nc_gid=AYm0upTy_sZXCHyx73b3pfX&oh=00_AYCawiuqlzfibtNZKpAZNIIKRUKHll4OA6uER0bIuHJTyw&oe=67449F54',
+              avatarUrl: userState.user!.photoURL,
               name: userState.user!.displayName!,
               email: userState.user!.email!),
           SizedBox(
@@ -72,6 +72,32 @@ class _MePageState extends State<MePage> {
                               _handleChangePassWord(userState);
                             },
                             icon: FaIcon(FontAwesomeIcons.penToSquare))
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(right: 10, left: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Change avatar'),
+                        Spacer(),
+                        PopupMenuButton<bool>(
+                          icon: FaIcon(
+                            FontAwesomeIcons.userTie,
+                          ),
+                          onSelected: (value) {
+                            _handleSetAvatar(value, userState);
+                          },
+                          itemBuilder:(context) => <PopupMenuEntry<bool>>[
+                            PopupMenuItem<bool>(
+                              value: true,
+                              child: Text('Camera')),
+                            PopupMenuItem<bool>(
+                              value: false,
+                              child: Text('Gallery')),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -220,6 +246,31 @@ class _MePageState extends State<MePage> {
         MaterialPageRoute(
           builder: (context) => TagManager(),
         ));
+  }
+
+  void _handleSetAvatar(bool isPickFromCamera, UserState userState) async {
+    final ImagePicker picker = ImagePicker();
+
+    if (isPickFromCamera) {
+      if (await Provider.of<DbProvider>(context, listen: false).isSimulator()) {
+        displayMessageToUser("Camera does not support in simulation", context);
+        return;
+      }
+      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+      if (image != null) {
+        setState(() {
+          userState.setAvatar(image.path);
+        });
+      } 
+    } else {
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        setState(() {
+          userState.setAvatar(image.path);
+        });
+      }
+    }
+
   }
 
   void _handleChangeUsername(UserState userState) async {

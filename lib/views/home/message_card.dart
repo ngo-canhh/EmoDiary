@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:emodiary/provider/user_state.dart';
 import 'package:emodiary/views/note/create_or_edit_note.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +82,7 @@ class _MessageCardState extends State<MessageCard> {
                 child: CircleAvatar(
                   radius: 35,
                   backgroundImage: user.photoURL != null
-                      ? NetworkImage(user.photoURL!)
+                      ? FileImage(File(user.photoURL!))
                       : const AssetImage('lib/assets/images/avatar_none.jpg')
                           as ImageProvider,
                   backgroundColor: Colors.grey[200],
